@@ -1,9 +1,10 @@
 module "db_instance" {
   source = "./modules/db_instance"
 
-  create                = local.create_db_instance
-  identifier            = var.identifier
-  use_identifier_prefix = var.instance_use_identifier_prefix
+  identifier        = var.identifier
+  id                = var.id
+  app_alias         = var.app_alias
+  environment       = var.environment
 
   engine                   = var.engine
   engine_version           = var.engine_version

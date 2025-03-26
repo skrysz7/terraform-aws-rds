@@ -1,12 +1,40 @@
+variable "id" {
+  type        = string
+  default     = ""
+  description = "Instance ID for consolidated instances (e.g., 01, 02, 03, ...)"
+  validation {
+    condition     = var.id == "" || var.app_alias == ""  # Musi być puste jedno z nich
+    error_message = "Provide only 'id' or 'app_alias', not both."
+  }
+}
+
+variable "app_alias" {
+  type        = string
+  default     = ""
+  description = "Application alias (max 8 chars) for individual app instances"
+}
+variable "environment" {
+  type    = string
+  validation {
+    condition     = contains(["devl", "intg", "nprd", "prod"], lower(var.environment))
+    error_message = "Invalid environment. Must be one of: devl, intg, nprd, prod."
+  }
+}
+
+variable "db_engine" {
+  type        = string
+  description = "The database engine to use in identifier"
+  validation {
+    condition     = contains(["ibmdb2", "mssql", "mysql", "oracle", "postgres"], lower(var.engine))
+    error_message = "Invalid database engine. Must be one of: ibmdb2, mssql, mysql, oracle, postgres."
+  }
+}
+
+
+#################
 variable "identifier" {
   description = "The name of the RDS instance"
   type        = string
-}
-
-variable "instance_use_identifier_prefix" {
-  description = "Determines whether to use `identifier` as is or create a unique identifier beginning with `identifier` as the specified prefix"
-  type        = bool
-  default     = false
 }
 
 variable "custom_iam_instance_profile" {
@@ -106,7 +134,7 @@ variable "domain_ou" {
 }
 
 variable "engine" {
-  description = "The database engine to use"
+  description = "The database engine to use for the DB instance"
   type        = string
   default     = null
 }
@@ -473,12 +501,6 @@ variable "option_group_skip_destroy" {
   description = "Set to true if you do not wish the option group to be deleted at destroy time, and instead just remove the option group from the Terraform state"
   type        = bool
   default     = null
-}
-
-variable "create_db_instance" {
-  description = "Whether to create a database instance"
-  type        = bool
-  default     = true
 }
 
 variable "timezone" {

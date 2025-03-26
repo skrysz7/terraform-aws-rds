@@ -1,36 +1,11 @@
-locals {
-  monitoring_role_arn = var.create_monitoring_role ? aws_iam_role.enhanced_monitoring[0].arn : var.monitoring_role_arn
-
-  final_snapshot_identifier = var.skip_final_snapshot ? null : "${var.final_snapshot_identifier_prefix}-${var.identifier}-${try(random_id.snapshot_identifier[0].hex, "")}"
-
-  identifier        = var.use_identifier_prefix ? null : var.identifier
-  identifier_prefix = var.use_identifier_prefix ? "${var.identifier}-" : null
-
-  monitoring_role_name        = var.monitoring_role_use_name_prefix ? null : var.monitoring_role_name
-  monitoring_role_name_prefix = var.monitoring_role_use_name_prefix ? "${var.monitoring_role_name}-" : null
-
-  # Replicas will use source metadata
-  is_replica = var.replicate_source_db != null
-}
-
 # Ref. https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html#genref-aws-service-namespaces
 data "aws_partition" "current" {}
 
-resource "random_id" "snapshot_identifier" {
-  count = var.create && !var.skip_final_snapshot ? 1 : 0
-
-  keepers = {
-    id = var.identifier
-  }
-
-  byte_length = 4
-}
-
 resource "aws_db_instance" "this" {
-  count = var.create ? 1 : 0
-
   identifier        = local.identifier
-  identifier_prefix = local.identifier_prefix
+  id                = var.id
+  app_alias         = var.app_alias
+  environment       = var.environment
 
   engine                   = local.is_replica ? null : var.engine
   engine_version           = var.engine_version
