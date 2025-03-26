@@ -2,10 +2,10 @@ variable "id" {
   type        = string
   default     = ""
   description = "Instance ID for consolidated instances (e.g., 01, 02, 03, ...)"
-  validation {
-    condition     = var.id == "" || var.app_alias == ""  # One of them must be empty
-    error_message = "Provide only 'id' or 'app_alias', not both."
-  }
+  # validation {
+  #   condition     = var.id == "" || var.app_alias == ""  # One of them must be empty
+  #   error_message = "Provide only 'id' or 'app_alias', not both."
+  # }
 }
 
 variable "app_alias" {

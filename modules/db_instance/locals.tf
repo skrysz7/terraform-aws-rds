@@ -14,10 +14,15 @@ locals {
   
   db_engine = lookup(local.engine_mapping, var.engine, var.engine)  # Default to original engine if not found
 
+  # identifier = (
+  #   var.app_alias != "" ? 
+  #   "db-${lower(var.db_engine)}-${lower(var.app_alias)}-${lower(var.environment)}" : 
+  #   "db-${lower(var.db_engine)}-${var.id}-${lower(var.environment)}"
+  # )
   identifier = (
     var.app_alias != "" ? 
-    "db-${lower(var.db_engine)}-${lower(var.app_alias)}-${lower(var.environment)}" : 
-    "db-${lower(var.db_engine)}-${var.id}-${lower(var.environment)}"
+    "db-${lower(local.db_engine)}-${lower(var.app_alias)}-${lower(var.environment)}" : 
+    (var.id != "" ? "db-${lower(local.db_engine)}-${var.id}-${lower(var.environment)}" : "default-db-id")
   )
   
 

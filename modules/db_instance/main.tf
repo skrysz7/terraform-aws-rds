@@ -7,7 +7,7 @@ resource "aws_db_instance" "this" {
   app_alias         = var.app_alias
   environment       = var.environment
 
-  engine                   = local.is_replica ? null : var.engine
+  engine                   = var.engine
   engine_version           = var.engine_version
   engine_lifecycle_support = var.engine_lifecycle_support
   instance_class           = var.instance_class
