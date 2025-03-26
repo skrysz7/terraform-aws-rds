@@ -2,12 +2,7 @@
 data "aws_partition" "current" {}
 
 resource "aws_db_instance" "this" {
-  identifier        = local.identifier
-  db_engine         = local.db_engine
-  id                = var.id
-  app_alias         = var.app_alias
-  environment       = var.environment
-
+  identifier               = local.identifier
   engine                   = var.engine
   engine_version           = var.engine_version
   engine_lifecycle_support = var.engine_lifecycle_support

@@ -1,12 +1,6 @@
 module "db_instance" {
   source = "./modules/db_instance"
 
-#   identifier        = var.identifier
-#   db_engine         = var.db_engine
-  id                = var.id
-  app_alias         = var.app_alias
-  environment       = var.environment
-
   engine                   = var.engine
   engine_version           = var.engine_version
   engine_lifecycle_support = var.engine_lifecycle_support

@@ -1,4 +1,8 @@
 locals {
+  environment       = var.environment
+  app_alias         = var.app_alias
+  id                = var.id
+
   engine_mapping = {
     "sqlserver-ee" = "mssql"
     "sqlserver-ex" = "mssql"
@@ -24,7 +28,7 @@ locals {
     "db-${lower(local.db_engine)}-${lower(var.app_alias)}-${lower(var.environment)}" : 
     (var.id != "" ? "db-${lower(local.db_engine)}-${var.id}-${lower(var.environment)}" : "default-db-id")
   )
-  
+   
 
   ########################
   monitoring_role_arn = var.create_monitoring_role ? aws_iam_role.enhanced_monitoring[0].arn : var.monitoring_role_arn
