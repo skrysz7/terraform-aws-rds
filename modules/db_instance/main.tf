@@ -182,15 +182,15 @@ resource "aws_iam_role_policy_attachment" "enhanced_monitoring" {
 # Managed Secret Rotation
 ################################################################################
 
-resource "aws_secretsmanager_secret_rotation" "this" {
-  #count = var.create && var.manage_master_user_password && var.manage_master_user_password_rotation ? 1 : 0
+# resource "aws_secretsmanager_secret_rotation" "this" {
+#   #count = var.create && var.manage_master_user_password && var.manage_master_user_password_rotation ? 1 : 0
 
-  secret_id          = aws_db_instance.this[0].master_user_secret[0].secret_arn
-  rotate_immediately = var.master_user_password_rotate_immediately
+#   secret_id          = aws_db_instance.this[0].master_user_secret[0].secret_arn
+#   rotate_immediately = var.master_user_password_rotate_immediately
 
-  rotation_rules {
-    automatically_after_days = var.master_user_password_rotation_automatically_after_days
-    duration                 = var.master_user_password_rotation_duration
-    schedule_expression      = var.master_user_password_rotation_schedule_expression
-  }
-}
+#   rotation_rules {
+#     automatically_after_days = var.master_user_password_rotation_automatically_after_days
+#     duration                 = var.master_user_password_rotation_duration
+#     schedule_expression      = var.master_user_password_rotation_schedule_expression
+#   }
+# }
