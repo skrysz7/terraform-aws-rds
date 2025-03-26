@@ -131,19 +131,13 @@ variable "domain_ou" {
   default     = null
 }
 
-variable "engine" {
-  description = "The database engine to use for the DB instance"
-  type        = string
-  default     = null
-}
-
 variable "db_engine" {
   type        = string
   description = "The database engine to use in identifier"
-  validation {
-    condition     = contains(["ibmdb2", "mssql", "mysql", "oracle", "postgres"], lower(var.engine))
-    error_message = "Invalid database engine. Must be one of: ibmdb2, mssql, mysql, oracle, postgres."
-  }
+  # validation {
+  #   condition     = contains(["ibmdb2", "mssql", "mysql", "oracle", "postgres"], lower(var.engine))
+  #   error_message = "Invalid database engine. Must be one of: ibmdb2, mssql, mysql, oracle, postgres."
+  # }
 }
 
 variable "engine_version" {

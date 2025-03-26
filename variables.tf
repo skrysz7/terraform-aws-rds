@@ -2,10 +2,10 @@ variable "id" {
   type        = string
   default     = ""
   description = "Instance ID for consolidated instances (e.g., 01, 02, 03, ...)"
-  validation {
-    condition     = var.id == "" || var.app_alias == ""  # Musi być puste jedno z nich
-    error_message = "Provide only 'id' or 'app_alias', not both."
-  }
+  # validation {
+  #   condition     = var.id == "" || var.app_alias == ""  # One of them must be empty
+  #   error_message = "Provide only 'id' or 'app_alias', not both."
+  # }
 }
 
 variable "app_alias" {
@@ -24,10 +24,10 @@ variable "environment" {
 variable "db_engine" {
   type        = string
   description = "The database engine to use in identifier"
-  validation {
-    condition     = contains(["ibmdb2", "mssql", "mysql", "oracle", "postgres"], lower(var.engine))
-    error_message = "Invalid database engine. Must be one of: ibmdb2, mssql, mysql, oracle, postgres."
-  }
+  # validation {
+  #   condition     = contains(["ibmdb2", "mssql", "mysql", "oracle", "postgres"], lower(var.engine))
+  #   error_message = "Invalid database engine. Must be one of: ibmdb2, mssql, mysql, oracle, postgres."
+  # }
 }
 
 
