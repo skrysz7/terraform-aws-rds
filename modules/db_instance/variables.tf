@@ -16,6 +16,7 @@ variable "app_alias" {
 
 variable "environment" {
   type    = string
+  default = "nprd"
   validation {
     condition     = contains(["devl", "intg", "nprd", "prod"], lower(var.environment))
     error_message = "Invalid environment. Must be one of: devl, intg, nprd, prod."
