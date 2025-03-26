@@ -21,21 +21,21 @@ variable "environment" {
   }
 }
 
-variable "db_engine" {
-  type        = string
-  description = "The database engine to use in identifier"
-  # validation {
-  #   condition     = contains(["ibmdb2", "mssql", "mysql", "oracle", "postgres"], lower(var.engine))
-  #   error_message = "Invalid database engine. Must be one of: ibmdb2, mssql, mysql, oracle, postgres."
-  # }
-}
+# variable "db_engine" {
+#   type        = string
+#   description = "The database engine to use in identifier"
+#   # validation {
+#   #   condition     = contains(["ibmdb2", "mssql", "mysql", "oracle", "postgres"], lower(var.engine))
+#   #   error_message = "Invalid database engine. Must be one of: ibmdb2, mssql, mysql, oracle, postgres."
+#   # }
+# }
 
 
 #################
-variable "identifier" {
-  description = "The name of the RDS instance"
-  type        = string
-}
+# variable "identifier" {
+#   description = "The name of the RDS instance"
+#   type        = string
+# }
 
 variable "custom_iam_instance_profile" {
   description = "RDS custom iam instance profile"
