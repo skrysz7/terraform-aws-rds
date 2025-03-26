@@ -26,10 +26,10 @@ variable "environment" {
 variable "engine" {
   type        = string
   description = "The database engine to use"
-  validation {
-    condition     = contains(["ibmdb2", "mssql", "mysql", "oracle", "postgres"], lower(var.engine))
-    error_message = "Invalid database engine. Must be one of: ibmdb2, mssql, mysql, oracle, postgres."
-  }
+  # validation {
+  #   condition     = contains(["ibmdb2", "mssql", "mysql", "oracle", "postgres"], lower(var.engine))
+  #   error_message = "Invalid database engine. Must be one of: ibmdb2, mssql, mysql, oracle, postgres."
+  # }
 }
 
 # variable "identifier" {
