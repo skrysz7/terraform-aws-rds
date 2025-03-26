@@ -1,5 +1,6 @@
 module "db_instance" {
   source                              = "./modules/db_instance"
+  environment                         = var.environment
   engine                              = var.engine
   engine_version                      = var.engine_version
   engine_lifecycle_support            = var.engine_lifecycle_support

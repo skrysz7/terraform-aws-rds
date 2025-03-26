@@ -1,3 +1,12 @@
+variable "environment" {
+  type    = string
+  default = "nprd"
+  validation {
+    condition     = contains(["devl", "intg", "nprd", "prod"], lower(var.environment))
+    error_message = "Invalid environment. Must be one of: devl, intg, nprd, prod."
+  }
+}
+
 variable "id" {
   type        = string
   default     = ""
@@ -13,13 +22,6 @@ variable "app_alias" {
   default     = ""
   description = "Application alias (max 8 chars) for individual app instances"
 }
-# variable "environment" {
-#   type    = string
-#   validation {
-#     condition     = contains(["devl", "intg", "nprd", "prod"], lower(var.environment))
-#     error_message = "Invalid environment. Must be one of: devl, intg, nprd, prod."
-#   }
-# }
 
 # variable "db_engine" {
 #   type        = string
