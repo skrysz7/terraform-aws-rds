@@ -25,8 +25,8 @@ locals {
   # )
   identifier = (
     var.app_alias != "" ? 
-    "db-${lower(local.db_engine)}-${lower(var.app_alias)}-${lower(local.environment)}" : 
-    (var.id != "" ? "db-${lower(local.db_engine)}-${var.id}-${lower(local.environment)}" : "default-db-id")
+    "db-${lower(local.db_engine)}-${lower(var.app_alias)}-${lower(var.environment)}" : 
+    (var.id != "" ? "db-${lower(local.db_engine)}-${var.id}-${lower(var.environment)}" : "default-db-id")
   )
    
 

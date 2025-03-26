@@ -1,6 +1,5 @@
 module "db_instance" {
   source = "./modules/db_instance"
-
   engine                   = var.engine
   engine_version           = var.engine_version
   engine_lifecycle_support = var.engine_lifecycle_support
@@ -10,7 +9,6 @@ module "db_instance" {
   storage_encrypted        = var.storage_encrypted
   kms_key_id               = var.kms_key_id
   license_model            = var.license_model
-
   db_name                             = var.db_name
   username                            = var.username
   password                            = var.manage_master_user_password ? null : var.password
