@@ -1,6 +1,6 @@
 # Ref. https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html#genref-aws-service-namespaces
 data "aws_partition" "current" {}
-
+ 
 resource "aws_db_instance" "this" {
   identifier               = local.identifier
   engine                   = var.engine
