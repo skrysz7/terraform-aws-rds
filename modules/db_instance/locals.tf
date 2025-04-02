@@ -67,7 +67,11 @@ locals {
     "db2-se" = ["diag", "notify"]
     "db2-ae" = ["diag", "notify"]
   }
-  enabled_cloudwatch_logs_exports = lookup(local.cloud_watch_log_mapping, var.engine, var.enabled_cloudwatch_logs_exports)
+  enabled_cloudwatch_logs_exports = (
+    length(var.enabled_cloudwatch_logs_exports) > 0 ? var.enabled_cloudwatch_logs_exports :
+    lookup(local.cloud_watch_log_mapping, var.engine, [])
+  )
+
 
   ########################
   monitoring_role_arn = var.create_monitoring_role ? aws_iam_role.enhanced_monitoring[0].arn : var.monitoring_role_arn
