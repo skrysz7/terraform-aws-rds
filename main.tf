@@ -1,7 +1,8 @@
 module "db_instance" {
   source                              = "./modules/db_instance"
-  id = var.id
-  app_alias = var.app_alias
+  id                                  = var.id
+  app_alias                           = var.app_alias
+  identifier                          = var.identifier
   environment                         = var.environment
   engine                              = var.engine
   engine_version                      = var.engine_version
