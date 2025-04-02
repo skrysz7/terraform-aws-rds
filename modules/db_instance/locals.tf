@@ -14,6 +14,8 @@ locals {
     "oracle-se1" = "oracle"
     "oracle-se2" = "oracle"
     "mysql" = "mysql"
+    "db2-se" = "ibmdb2"
+    "db2-ae" = "ibmdb2"
   }
   
   db_engine = lookup(local.engine_mapping, var.engine, var.engine)  # Default to original engine if not found
@@ -23,6 +25,8 @@ locals {
   #   "db-${lower(local.db_engine)}-${lower(var.app_alias)}-${lower(var.environment)}" : 
   #   (var.id != "" ? "db-${lower(local.db_engine)}-${var.id}-${lower(var.environment)}" : "")
   # )
+
+  # If identifier is not provided then TF creates it dynamically based on provided app_alias or id
   identifier = (
     var.identifier != null && var.identifier != "" ? var.identifier :
     (var.app_alias != "" ? 
@@ -30,15 +34,13 @@ locals {
       (var.id != "" ? "db-${lower(local.db_engine)}-${var.id}-${lower(var.environment)}" : "")
     )
   )
-
-   backup_retention_period_mapping = {
+  backup_retention_period_mapping = {
     "prod"  = 30
     "nprd"  = 15
     "intg"  = 15
     "devl"  = 15
   }
   backup_retention_period = lookup(local.backup_retention_period_mapping, lower(var.environment), 15) # By defailt 15, if environment is unknown
-  
   backup_window_mapping = {
     "prod"  = "20:00-01:00"
     "nprd"  = "19:00-00:00"
@@ -51,6 +53,21 @@ locals {
   
   character_set_name = contains(local.sqlserver_engines, var.engine) ? "Latin1_General_CI_AS" : null
 
+  cloud_watch_log_mapping = {
+    "sqlserver-ee" = ["error", "agent"]
+    "sqlserver-ex" = ["error", "agent"]
+    "sqlserver-se" = ["error", "agent"]
+    "sqlserver-web" = ["error", "agent"]
+    "postgres" = ["postgresql", "upgrade"]
+    "oracle-ee" = ["alert", "listener", "trace"]
+    "oracle-se" = ["alert", "listener", "trace"]
+    "oracle-se1" = ["alert", "listener", "trace"]
+    "oracle-se2" = ["alert", "listener", "trace"]
+    #"mysql" = []
+    "db2-se" = ["diag", "notify"]
+    "db2-ae" = ["diag", "notify"]
+  }
+  enabled_cloudwatch_logs_exports = lookup(local.cloud_watch_log_mapping, var.engine, var.enabled_cloudwatch_logs_exports)
 
   ########################
   monitoring_role_arn = var.create_monitoring_role ? aws_iam_role.enhanced_monitoring[0].arn : var.monitoring_role_arn

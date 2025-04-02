@@ -77,7 +77,7 @@ resource "aws_db_instance" "this" {
   character_set_name              = local.character_set_name
   nchar_character_set_name        = var.nchar_character_set_name
   timezone                        = var.timezone
-  enabled_cloudwatch_logs_exports = var.enabled_cloudwatch_logs_exports
+  enabled_cloudwatch_logs_exports = local.enabled_cloudwatch_logs_exports
 
   deletion_protection      = var.deletion_protection
   delete_automated_backups = var.delete_automated_backups

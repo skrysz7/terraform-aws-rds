@@ -227,7 +227,6 @@ variable "vpc_security_group_ids" {
 variable "db_subnet_group_name" {
   description = "Name of DB subnet group. DB instance will be created in the VPC associated with the DB subnet group. If unspecified, will be created in the default VPC"
   type        = string
-  default     = null
 }
 
 variable "parameter_group_name" {
@@ -395,7 +394,7 @@ variable "timeouts" {
 variable "deletion_protection" {
   description = "The database can't be deleted when this value is set to true."
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "performance_insights_enabled" {
