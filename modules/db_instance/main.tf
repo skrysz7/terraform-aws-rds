@@ -68,13 +68,13 @@ resource "aws_db_instance" "this" {
 
   replicate_source_db     = var.replicate_source_db
   replica_mode            = var.replica_mode
-  backup_retention_period = length(var.blue_green_update) > 0 ? coalesce(var.backup_retention_period, 1) : var.backup_retention_period
-  backup_window           = var.backup_window
+  backup_retention_period = local.backup_retention_period
+  backup_window           = local.backup_window
   max_allocated_storage   = var.max_allocated_storage
   monitoring_interval     = var.monitoring_interval
   monitoring_role_arn     = var.monitoring_interval > 0 ? local.monitoring_role_arn : null
 
-  character_set_name              = var.character_set_name
+  character_set_name              = local.character_set_name
   nchar_character_set_name        = var.nchar_character_set_name
   timezone                        = var.timezone
   enabled_cloudwatch_logs_exports = var.enabled_cloudwatch_logs_exports

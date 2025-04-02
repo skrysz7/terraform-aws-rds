@@ -33,10 +33,11 @@ variable "app_alias" {
 
 
 #################
-# variable "identifier" {
-#   description = "The name of the RDS instance"
-#   type        = string
-# }
+variable "identifier" {
+  description = "The name of the RDS instance"
+  type        = string
+  default     = null
+}
 
 variable "custom_iam_instance_profile" {
   description = "RDS custom iam instance profile"
@@ -167,7 +168,7 @@ variable "snapshot_identifier" {
 variable "copy_tags_to_snapshot" {
   description = "On delete, copy all Instance tags to the final snapshot"
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "final_snapshot_identifier_prefix" {

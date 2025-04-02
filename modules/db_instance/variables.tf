@@ -2,10 +2,6 @@ variable "id" {
   type        = string
   default     = ""
   description = "Instance ID for consolidated instances (e.g., 01, 02, 03, ...)"
-  # validation {
-  #   condition     = var.id == "" || var.app_alias == ""  # One of them must be empty
-  #   error_message = "Provide only 'id' or 'app_alias', not both."
-  # }
 }
 
 variable "app_alias" {
@@ -31,10 +27,11 @@ variable "engine" {
   # }
 }
 
-# variable "identifier" {
-#   description = "The name of the RDS instance"
-#   type        = string
-# }
+variable "identifier" {
+  description = "The name of the RDS instance"
+  type        = string
+  default     = null
+}
 variable "custom_iam_instance_profile" {
   description = "RDS custom iam instance profile"
   type        = string
@@ -212,7 +209,7 @@ variable "snapshot_identifier" {
 variable "copy_tags_to_snapshot" {
   description = "On delete, copy all Instance tags to the final snapshot"
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "final_snapshot_identifier_prefix" {
