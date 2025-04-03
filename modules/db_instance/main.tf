@@ -6,6 +6,7 @@ module "kms_key" {
   application_name  = var.application_name
   identifier   = local.identifier
   policy = var.kms_policy
+  name       = var.kms_alias_name
 }
 
 resource "aws_db_instance" "this" {

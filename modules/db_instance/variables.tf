@@ -41,9 +41,10 @@ variable "application_name" {
   description = "Application name used in various resource descriptions"
   type        = string
 }
-variable "alias_name" {
-  description = "Alias name used for KMS key"
+variable "kms_alias_name" {
+  description = "Custom KMS alias name"
   type        = string
+  default     = null
 }
 variable "kms_policy" {
   description = "Custom KMS policy JSON document"
