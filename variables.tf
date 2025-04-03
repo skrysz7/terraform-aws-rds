@@ -83,6 +83,11 @@ variable "replicate_source_db" {
   type        = string
   default     = null
 }
+variable "kms_policy" {
+  description = "Custom KMS policy JSON document"
+  type        = string
+  default     = null
+}
 
 variable "license_model" {
   description = "License model information for this DB instance. Optional, but required for some DB engines, i.e. Oracle SE1"

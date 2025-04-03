@@ -21,6 +21,7 @@ variable "deletion_window_in_days" {
 variable "policy" {
   description = "A valid policy JSON document"
   type        = string
+  default     = null
 }
 variable "is_enabled" {
   description = "Specifies whether the key is enabled"
@@ -30,6 +31,7 @@ variable "is_enabled" {
 variable "name" {
   description = "The display name of the alias. The name must start with the word 'alias' followed by a forward slash (alias/)"
   type        = string
+  default     = null
 }
 # variable "target_key_id" {
 #   description = "Identifier for the key for which the alias is for, can be either an ARN or key_id"

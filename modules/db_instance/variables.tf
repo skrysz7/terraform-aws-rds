@@ -45,6 +45,12 @@ variable "alias_name" {
   description = "Alias name used for KMS key"
   type        = string
 }
+variable "kms_policy" {
+  description = "Custom KMS policy JSON document"
+  type        = string
+  default     = null
+}
+
 
 variable "allocated_storage" {
   description = "The allocated storage in gigabytes"
