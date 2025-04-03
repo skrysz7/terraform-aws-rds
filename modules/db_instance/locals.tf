@@ -20,12 +20,6 @@ locals {
   
   db_engine = lookup(local.engine_mapping, var.engine, var.engine)  # Default to original engine if not found
 
-  # identifier = (
-  #   var.app_alias != "" ? 
-  #   "db-${lower(local.db_engine)}-${lower(var.app_alias)}-${lower(var.environment)}" : 
-  #   (var.id != "" ? "db-${lower(local.db_engine)}-${var.id}-${lower(var.environment)}" : "")
-  # )
-
   # If identifier is not provided then TF creates it dynamically based on provided app_alias or id
   identifier = (
     var.identifier != null && var.identifier != "" ? var.identifier :
@@ -49,6 +43,14 @@ locals {
   }
   backup_window = lookup(local.backup_window_mapping, lower(var.environment), "19:00-00:00") # By defailt "19:00-00:00", if environment is unknown
   
+  maintenance_window_mapping = {
+    "prod"  = "Thu:21:00-Thu:00:00"
+    "nprd"  = "Tue:00:00-Tue:03:00"
+    "intg"  = "Tue:00:00-Tue:03:00"
+    "devl"  = "Tue:00:00-Tue:03:00"
+  }
+  maintenance_window = lookup(local.maintenance_window_mapping, lower(var.environment), "Tue:00:00-Tue:03:00")
+
   sqlserver_engines = ["sqlserver-ee", "sqlserver-ex", "sqlserver-se", "sqlserver-web"]
   
   character_set_name = contains(local.sqlserver_engines, var.engine) ? "Latin1_General_CI_AS" : null
@@ -72,6 +74,20 @@ locals {
     lookup(local.cloud_watch_log_mapping, var.engine, [])
   )
 
+  license_model_mapping = {
+    "sqlserver-ee" = "license-included"
+    "sqlserver-ex" = "license-included"
+    "sqlserver-se" = "license-included"
+    "sqlserver-web" = "license-included"
+    "postgres" = "postgresql-license"
+    "oracle-ee" = "license-included"
+    "oracle-se" = "license-included"
+    "oracle-se1" = "license-included"
+    "oracle-se2" = "license-included"
+  }
+  license_model = (
+    var.license_model != null && var.license_model != "" ? var.license_model : lookup(local.license_model_mapping, var.engine, "license-included")
+  )
 
   ########################
   monitoring_role_arn = var.create_monitoring_role ? aws_iam_role.enhanced_monitoring[0].arn : var.monitoring_role_arn

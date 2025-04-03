@@ -229,7 +229,7 @@ variable "master_user_secret_kms_key_id" {
   If not specified, the default KMS key for your Amazon Web Services account is used.
   EOF
   type        = string
-  default     = null
+  # default     = null
 }
 
 variable "port" {
@@ -669,7 +669,7 @@ variable "db_instance_role_associations" {
 variable "manage_master_user_password_rotation" {
   description = "Whether to manage the master user password rotation. By default, false on creation, rotation is managed by RDS. Setting this value to false after previously having been set to true will disable automatic rotation."
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "master_user_password_rotate_immediately" {
@@ -687,11 +687,11 @@ variable "master_user_password_rotation_automatically_after_days" {
 variable "master_user_password_rotation_duration" {
   description = "The length of the rotation window in hours. For example, 3h for a three hour window."
   type        = string
-  default     = null
+  default     = "3h"
 }
 
 variable "master_user_password_rotation_schedule_expression" {
   description = "A cron() or rate() expression that defines the schedule for rotating your secret. Either automatically_after_days or schedule_expression must be specified."
   type        = string
-  default     = null
+  default     = "cron(0 20 ? * SUN#1 *)" # Runs at 20:00 UTC (8 PM) on the first Sunday of every month
 }

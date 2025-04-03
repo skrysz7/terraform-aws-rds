@@ -15,6 +15,29 @@ resource "aws_kms_key" "this" {
         }
         Action = "kms:*"
         Resource = "*"
+      },
+      {
+        Sid = "Allow access through RDS for all authorized RDS principals in the account"
+        Effect = "Allow"
+        Principal = {
+          Service = "rds.amazonaws.com"
+        }
+        Action = [
+            "kms:Encrypt",
+            "kms:Decrypt",
+            "kms:ReEncrypt*",
+            "kms:GenerateDataKey*",
+            "kms:CreateGrant",
+            "kms:ListGrants",
+            "kms:DescribeKey"
+        ]
+        Resource = "*"
+        Condition = {
+            StringEquals = {
+                "kms:ViaService": "rds.amazonaws.com",
+                "kms:CallerAccount": "${data.aws_caller_identity.current.account_id}"
+            }
+        }
       }
     ]
   })

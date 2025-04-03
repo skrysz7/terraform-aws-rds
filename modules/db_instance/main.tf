@@ -19,9 +19,8 @@ resource "aws_db_instance" "this" {
   allocated_storage        = var.allocated_storage
   storage_type             = var.storage_type
   storage_encrypted        = var.storage_encrypted
-  #kms_key_id               = var.kms_key_id
-  kms_key_id = var.kms_key_id != "" ? var.kms_key_id : module.kms_key.kms_key_id
-  license_model            = var.license_model
+  kms_key_id               = var.kms_key_id != null ? var.kms_key_id : module.kms_key.kms_key_id
+  license_model            = local.license_model
 
   db_name                             = var.db_name
   username                            = !local.is_replica ? var.username : null
@@ -35,8 +34,8 @@ resource "aws_db_instance" "this" {
   domain_ou                           = var.domain_ou
   iam_database_authentication_enabled = var.iam_database_authentication_enabled
   custom_iam_instance_profile         = var.custom_iam_instance_profile
-  manage_master_user_password         = !local.is_replica && var.manage_master_user_password ? var.manage_master_user_password : null
-  master_user_secret_kms_key_id       = !local.is_replica && var.manage_master_user_password ? var.master_user_secret_kms_key_id : null
+  manage_master_user_password         = var.manage_master_user_password
+  master_user_secret_kms_key_id       = var.master_user_secret_kms_key_id
 
   vpc_security_group_ids = var.vpc_security_group_ids
   db_subnet_group_name   = var.db_subnet_group_name
@@ -56,7 +55,7 @@ resource "aws_db_instance" "this" {
   allow_major_version_upgrade = var.allow_major_version_upgrade
   auto_minor_version_upgrade  = var.auto_minor_version_upgrade
   apply_immediately           = var.apply_immediately
-  maintenance_window          = var.maintenance_window
+  maintenance_window          = local.maintenance_window
 
   # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/blue-green-deployments.html
   dynamic "blue_green_update" {
@@ -195,15 +194,13 @@ resource "aws_iam_role_policy_attachment" "enhanced_monitoring" {
 # Managed Secret Rotation
 ################################################################################
 
-# resource "aws_secretsmanager_secret_rotation" "this" {
-#   #count = var.create && var.manage_master_user_password && var.manage_master_user_password_rotation ? 1 : 0
+resource "aws_secretsmanager_secret_rotation" "this" {
+  secret_id          = aws_db_instance.this[0].master_user_secret[0].secret_arn
+  rotate_immediately = var.master_user_password_rotate_immediately
 
-#   secret_id          = aws_db_instance.this[0].master_user_secret[0].secret_arn
-#   rotate_immediately = var.master_user_password_rotate_immediately
-
-#   rotation_rules {
-#     automatically_after_days = var.master_user_password_rotation_automatically_after_days
-#     duration                 = var.master_user_password_rotation_duration
-#     schedule_expression      = var.master_user_password_rotation_schedule_expression
-#   }
-# }
+  rotation_rules {
+    automatically_after_days = var.master_user_password_rotation_automatically_after_days
+    duration                 = var.master_user_password_rotation_duration
+    schedule_expression      = var.master_user_password_rotation_schedule_expression
+  }
+}
