@@ -204,7 +204,7 @@ variable "db_name" {
 variable "username" {
   description = "Username for the master DB user"
   type        = string
-  default     = null
+  default     = "dbadmin"
 }
 
 variable "password" {
