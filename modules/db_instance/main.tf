@@ -11,7 +11,7 @@ module "kms_key" {
 
 resource "aws_db_instance" "this" {
   identifier               = local.identifier
-  application_name  = var.application_name
+  # application_name         = var.application_name
   engine                   = var.engine
   engine_version           = var.engine_version
   engine_lifecycle_support = var.engine_lifecycle_support
@@ -116,7 +116,10 @@ resource "aws_db_instance" "this" {
     }
   }
 
-  tags = merge(var.tags, var.db_instance_tags)
+  tags = merge(var.tags, var.db_instance_tags, 
+          {
+           "xms:service:name" = var.application_name 
+          })
 
   depends_on = [aws_cloudwatch_log_group.this]
 
