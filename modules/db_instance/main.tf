@@ -197,7 +197,7 @@ resource "aws_iam_role_policy_attachment" "enhanced_monitoring" {
 ################################################################################
 
 resource "aws_secretsmanager_secret_rotation" "this" {
-  secret_id          = aws_db_instance.this[0].master_user_secret[0].secret_arn
+  secret_id          = aws_db_instance.this.master_user_secret.secret_arn
   rotate_immediately = var.master_user_password_rotate_immediately
 
   rotation_rules {
