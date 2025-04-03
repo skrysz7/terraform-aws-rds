@@ -232,7 +232,7 @@ resource "aws_secretsmanager_secret_policy" "this" {
         Sid       = "AllowAccessForExternalAccount",
         Effect    = "Allow",
         Principal = {
-          AWS = "arn:aws:iam::257295880678:root"
+          AWS = "arn:aws:iam::1234567890:root" # set it to ms-sql account
         },
         Action    = [
           "secretsmanager:GetSecretValue",
