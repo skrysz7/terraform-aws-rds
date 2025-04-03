@@ -118,6 +118,10 @@
 #   description = "The ARN of the master user secret (Only available when manage_master_user_password is set to true)"
 #   value       = try(aws_db_instance.this[0].master_user_secret[0].secret_arn, null)
 # }
+output "db_instance_master_user_secret_arn" {
+  value = aws_db_instance.this.db_instance_master_user_secret_arn
+}
+
 
 # ################################################################################
 # # CloudWatch Log Group

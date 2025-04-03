@@ -23,8 +23,10 @@ resource "aws_db_instance" "this" {
   license_model            = local.license_model
 
   db_name                             = var.db_name
-  username                            = !local.is_replica ? var.username : null
-  password                            = !local.is_replica && var.manage_master_user_password ? null : var.password
+  # username                            = !local.is_replica ? var.username : null
+  # password                            = !local.is_replica && var.manage_master_user_password ? null : var.password
+  username = var.username
+  password = var.password
   port                                = var.port
   domain                              = var.domain
   domain_auth_secret_arn              = var.domain_auth_secret_arn
@@ -203,6 +205,9 @@ resource "aws_secretsmanager_secret_rotation" "this" {
     duration                 = var.master_user_password_rotation_duration
     schedule_expression      = var.master_user_password_rotation_schedule_expression
   }
+}
+data "aws_secretsmanager_secret" "this" {
+  arn = try(aws_db_instance.this.db_instance_master_user_secret_arn, null)
 }
 
 resource "aws_secretsmanager_secret_policy" "this" {
