@@ -37,6 +37,14 @@ variable "custom_iam_instance_profile" {
   type        = string
   default     = null
 }
+variable "application_name" {
+  description = "Application name used in various resource descriptions"
+  type        = string
+}
+variable "alias_name" {
+  description = "Alias name used for KMS key"
+  type        = string
+}
 
 variable "allocated_storage" {
   description = "The allocated storage in gigabytes"

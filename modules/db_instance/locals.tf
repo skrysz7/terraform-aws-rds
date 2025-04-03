@@ -55,7 +55,7 @@ locals {
 
   cloud_watch_log_mapping = {
     "sqlserver-ee" = ["error", "agent"]
-    "sqlserver-ex" = ["error"]
+    "sqlserver-ex" = ["error", "agent"]
     "sqlserver-se" = ["error", "agent"]
     "sqlserver-web" = ["error", "agent"]
     "postgres" = ["postgresql", "upgrade"]

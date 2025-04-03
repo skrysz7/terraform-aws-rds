@@ -1,8 +1,15 @@
 # Ref. https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html#genref-aws-service-namespaces
 data "aws_partition" "current" {}
- 
+
+module "kms_key" {
+  source            = "../kms_key"
+  application_name  = var.application_name
+  identifier   = local.identifier
+}
+
 resource "aws_db_instance" "this" {
   identifier               = local.identifier
+  application_name  = var.application_name
   engine                   = var.engine
   engine_version           = var.engine_version
   engine_lifecycle_support = var.engine_lifecycle_support
@@ -10,7 +17,8 @@ resource "aws_db_instance" "this" {
   allocated_storage        = var.allocated_storage
   storage_type             = var.storage_type
   storage_encrypted        = var.storage_encrypted
-  kms_key_id               = var.kms_key_id
+  #kms_key_id               = var.kms_key_id
+  kms_key_id = var.kms_key_id != "" ? var.kms_key_id : module.kms_key.kms_key_id
   license_model            = var.license_model
 
   db_name                             = var.db_name
