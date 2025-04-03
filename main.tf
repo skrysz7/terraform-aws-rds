@@ -18,7 +18,8 @@ module "db_instance" {
   license_model                       = var.license_model
   db_name                             = var.db_name
   username                            = var.username
-  password                            = var.manage_master_user_password ? null : var.password
+  #password                            = var.manage_master_user_password ? null : var.password
+  password                            = var.password
   port                                = var.port
   domain                              = var.domain
   domain_auth_secret_arn              = var.domain_auth_secret_arn
