@@ -19,7 +19,7 @@ resource "aws_db_instance" "this" {
   allocated_storage        = var.allocated_storage
   storage_type             = var.storage_type
   storage_encrypted        = var.storage_encrypted
-  kms_key_id               = var.kms_key_id != null ? var.kms_key_id : module.kms_key.kms_key_id
+  kms_key_id               = var.kms_key_id != null ? var.kms_key_id : module.kms_key.kms_key_arn
   license_model            = local.license_model
 
   db_name                             = var.db_name
