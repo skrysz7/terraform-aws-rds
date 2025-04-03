@@ -31,10 +31,11 @@ variable "name" {
   description = "The display name of the alias. The name must start with the word 'alias' followed by a forward slash (alias/)"
   type        = string
 }
-variable "target_key_id" {
-  description = "Identifier for the key for which the alias is for, can be either an ARN or key_id"
-  type        = string
-}
+# variable "target_key_id" {
+#   description = "Identifier for the key for which the alias is for, can be either an ARN or key_id"
+#   type        = string
+#   default     = null
+# }
 variable "application_name" {
   description = "Application name to be included in the KMS key description"
   type        = string
