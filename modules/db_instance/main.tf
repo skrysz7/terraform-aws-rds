@@ -119,7 +119,7 @@ resource "aws_db_instance" "this" {
 
   tags = merge(var.tags, var.db_instance_tags, 
           {
-           "xms:service:name" = var.application_name 
+           "xxx:service:name" = var.application_name 
           })
 
   depends_on = [aws_cloudwatch_log_group.this]
