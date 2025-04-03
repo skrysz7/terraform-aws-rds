@@ -1,7 +1,7 @@
 variable "description" {
   description = "The description of the key as viewed in AWS console"
   type        = string
-  default     = "Symmetric AWS CMK for RDS Storage"
+  default     = null
 }
 variable "enable_key_rotation" {
   description = "Specifies whether key rotation is enabled"
