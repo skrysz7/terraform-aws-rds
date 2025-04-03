@@ -32,14 +32,13 @@ module "db_instance" {
   manage_master_user_password_rotation = var.manage_master_user_password_rotation
   master_user_password_rotation_schedule_expression = var.master_user_password_rotation_schedule_expression
   master_user_password_rotation_duration = var.master_user_password_rotation_duration
-  master_user_secret_kms_key_id = aws_kms_key.cmk-rds-secret.arn
+  master_user_secret_kms_key_id = var.master_user_secret_kms_key_id
 
   # master_user_password_rotate_immediately                = var.master_user_password_rotate_immediately
   # master_user_password_rotation_automatically_after_days = var.master_user_password_rotation_automatically_after_days
 
   vpc_security_group_ids = var.vpc_security_group_ids
-  #db_subnet_group_name   = var.db_subnet_group_name
-  db_subnet_group_name  = aws_db_subnet_group.rds_db_subnet_group.name
+  db_subnet_group_name   = var.db_subnet_group_name
   parameter_group_name   = var.parameter_group_name
   option_group_name      = var.option_group_name
   network_type           = var.network_type

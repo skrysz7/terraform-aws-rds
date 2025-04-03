@@ -204,3 +204,37 @@ resource "aws_secretsmanager_secret_rotation" "this" {
     schedule_expression      = var.master_user_password_rotation_schedule_expression
   }
 }
+
+resource "aws_secretsmanager_secret_policy" "this" {
+  secret_arn = data.aws_secretsmanager_secret.this.arn
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Sid       = "AllowuseoftheSecretforaccount",
+        Effect    = "Allow",
+        Principal = {
+          AWS = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
+        },
+        Action    = [
+          "secretsmanager:GetSecretValue",
+          "secretsmanager:DescribeSecret"
+        ],
+        Resource  = data.aws_secretsmanager_secret.this.arn
+      },
+      {
+        Sid       = "AllowAccessForExternalAccount",
+        Effect    = "Allow",
+        Principal = {
+          AWS = "arn:aws:iam::257295880678:root"
+        },
+        Action    = [
+          "secretsmanager:GetSecretValue",
+          "secretsmanager:DescribeSecret"
+        ],
+        Resource  = data.aws_secretsmanager_secret.this.arn
+      }
+    ]
+  })
+}
