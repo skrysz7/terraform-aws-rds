@@ -1,12 +1,21 @@
 # Ref. https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html#genref-aws-service-namespaces
 data "aws_partition" "current" {}
 
-module "kms_key" {
-  source            = "../kms_key"
+module "db_kms_key" {
+  source            = "../db_kms_key"
   application_name  = var.application_name
   identifier   = local.identifier
   policy = var.kms_policy
   name       = var.kms_alias_name
+}
+
+module "db_option_group" {
+  source = "../db_option_group"
+  identifier      = local.identifier
+  name = var.option_group_name
+  engine          = var.engine
+  engine_version  = var.engine_version
+  backup_restore_role_arn  = var.backup_restore_role_arn
 }
 
 resource "aws_db_instance" "this" {
@@ -168,29 +177,29 @@ data "aws_iam_policy_document" "enhanced_monitoring" {
   }
 }
 
-resource "aws_iam_role" "enhanced_monitoring" {
-  count = var.create_monitoring_role ? 1 : 0
+# resource "aws_iam_role" "enhanced_monitoring" {
+#   count = var.create_monitoring_role ? 1 : 0
 
-  name                 = local.monitoring_role_name
-  name_prefix          = local.monitoring_role_name_prefix
-  assume_role_policy   = data.aws_iam_policy_document.enhanced_monitoring.json
-  description          = var.monitoring_role_description
-  permissions_boundary = var.monitoring_role_permissions_boundary
+#   name                 = local.monitoring_role_name
+#   name_prefix          = local.monitoring_role_name_prefix
+#   assume_role_policy   = data.aws_iam_policy_document.enhanced_monitoring.json
+#   description          = var.monitoring_role_description
+#   permissions_boundary = var.monitoring_role_permissions_boundary
 
-  tags = merge(
-    {
-      "Name" = format("%s", var.monitoring_role_name)
-    },
-    var.tags,
-  )
-}
+#   tags = merge(
+#     {
+#       "Name" = format("%s", var.monitoring_role_name)
+#     },
+#     var.tags,
+#   )
+# }
 
-resource "aws_iam_role_policy_attachment" "enhanced_monitoring" {
-  count = var.create_monitoring_role ? 1 : 0
+# resource "aws_iam_role_policy_attachment" "enhanced_monitoring" {
+#   count = var.create_monitoring_role ? 1 : 0
 
-  role       = aws_iam_role.enhanced_monitoring[0].name
-  policy_arn = "arn:${data.aws_partition.current.partition}:iam::aws:policy/service-role/AmazonRDSEnhancedMonitoringRole"
-}
+#   role       = aws_iam_role.enhanced_monitoring[0].name
+#   policy_arn = "arn:${data.aws_partition.current.partition}:iam::aws:policy/service-role/AmazonRDSEnhancedMonitoringRole"
+# }
 
 ################################################################################
 # Managed Secret Rotation

@@ -18,7 +18,9 @@ locals {
     "db2-ae" = "ibmdb2"
   }
   
-  db_engine = lookup(local.engine_mapping, var.engine, var.engine)  # Default to original engine if not found
+  db_engine = (
+    lookup(local.engine_mapping, var.engine, var.engine)  # Default to original engine if not found
+  )
 
   # If identifier is not provided then TF creates it dynamically based on provided app_alias or id
   identifier = (
@@ -41,7 +43,9 @@ locals {
     "intg"  = "19:00-00:00"
     "devl"  = "19:00-00:00"
   }
-  backup_window = lookup(local.backup_window_mapping, lower(var.environment), "19:00-00:00") # By defailt "19:00-00:00", if environment is unknown
+  backup_window = (
+    var.backup_window != null && var.backup_window != "" ? var.backup_window : lookup(local.backup_window_mapping, lower(var.environment), "19:00-00:00") # By defailt "19:00-00:00", if environment is unknown
+  )
   
   maintenance_window_mapping = {
     "prod"  = "Thu:21:00-Thu:00:00"
@@ -49,11 +53,15 @@ locals {
     "intg"  = "Tue:00:00-Tue:03:00"
     "devl"  = "Tue:00:00-Tue:03:00"
   }
-  maintenance_window = lookup(local.maintenance_window_mapping, lower(var.environment), "Tue:00:00-Tue:03:00")
-
+  maintenance_window = (
+    var.maintenance_window != null && var.maintenance_window != "" ? var.maintenance_window : lookup(local.maintenance_window_mapping, lower(var.environment), "Tue:00:00-Tue:03:00")
+  )
+  
   sqlserver_engines = ["sqlserver-ee", "sqlserver-ex", "sqlserver-se", "sqlserver-web"]
   
-  character_set_name = contains(local.sqlserver_engines, var.engine) ? "Latin1_General_CI_AS" : null
+  character_set_name = (
+    var.character_set_name != null && var.character_set_name != "" ? var.character_set_name : (contains(local.sqlserver_engines, var.engine) ? "Latin1_General_CI_AS" : null)
+  )
 
   cloud_watch_log_mapping = {
     "sqlserver-ee" = ["error", "agent"]
@@ -89,12 +97,13 @@ locals {
     var.license_model != null && var.license_model != "" ? var.license_model : lookup(local.license_model_mapping, var.engine, "license-included")
   )
 
+  monitoring_role_arn = (
+    var.monitoring_role_arn != null && var.monitoring_role_arn != "" ? var.monitoring_role_arn : ("arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/rds-monitoring-role")
+  )
+
+  
+
   ########################
-  monitoring_role_arn = var.create_monitoring_role ? aws_iam_role.enhanced_monitoring[0].arn : var.monitoring_role_arn
-
-  monitoring_role_name        = var.monitoring_role_use_name_prefix ? null : var.monitoring_role_name
-  monitoring_role_name_prefix = var.monitoring_role_use_name_prefix ? "${var.monitoring_role_name}-" : null
-
   # Replicas will use source metadata
   is_replica = var.replicate_source_db != null
 }

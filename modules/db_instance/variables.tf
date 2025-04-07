@@ -51,7 +51,11 @@ variable "kms_policy" {
   type        = string
   default     = null
 }
-
+variable "option_group_name" {
+  description = "The name of the option group"
+  type        = string
+  default     = null
+}
 
 variable "allocated_storage" {
   description = "The allocated storage in gigabytes"
@@ -277,7 +281,7 @@ variable "publicly_accessible" {
 variable "monitoring_interval" {
   description = "The interval, in seconds, between points when Enhanced Monitoring metrics are collected for the DB instance. To disable collecting Enhanced Monitoring metrics, specify 0. The default is 0. Valid Values: 0, 1, 5, 10, 15, 30, 60."
   type        = number
-  default     = 0
+  default     = 60
 }
 
 variable "monitoring_role_arn" {
@@ -551,4 +555,9 @@ variable "master_user_password_rotation_schedule_expression" {
   description = "A cron() or rate() expression that defines the schedule for rotating your secret. Either automatically_after_days or schedule_expression must be specified."
   type        = string
   default     = "cron(0 20 ? * SUN#1 *)" # Runs at 20:00 UTC (8 PM) on the first Sunday of every month
+}
+variable "backup_restore_role_arn" {
+  type        = string
+  description = "ARN of existing IAM role used for option SQLSERVER_BACKUP_RESTORE"
+  default     = null
 }
