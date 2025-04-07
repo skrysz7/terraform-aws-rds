@@ -51,11 +51,6 @@ variable "kms_policy" {
   type        = string
   default     = null
 }
-variable "option_group_name" {
-  description = "The name of the option group"
-  type        = string
-  default     = null
-}
 
 variable "allocated_storage" {
   description = "The allocated storage in gigabytes"
