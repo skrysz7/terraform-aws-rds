@@ -19,13 +19,13 @@ locals {
   #     "${local.engine}${local.major_version}" :
   #     null
   #   )
-  engine_major_version = split(".", var.engine_version)[0]
-  engine_minor_version = tostring(tonumber(split(".", var.engine_version)[1]))
+  # engine_major_version = split(".", var.engine_version)[0]
+  # engine_minor_version = tostring(tonumber(split(".", var.engine_version)[1]))
 
   family = contains(local.mssql_engines, var.engine) ?
-    "${var.engine}-${local.engine_major_version}.${local.engine_minor_version}" :
+    "${var.engine}-${split(".", var.engine_version)[0]}.${tostring(tonumber(split(".", var.engine_version)[1]))}" :
     contains(["postgres"], var.engine) ?
-    "postgres${local.engine_major_version}" :
+    "postgres${split(".", var.engine_version)[0]}" :
     null
 
   parameter_group_description = (
