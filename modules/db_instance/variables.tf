@@ -575,3 +575,13 @@ variable "parameter_group_description" {
   type        = string
   default     = null
 }
+variable "major_engine_version" {
+  description = "Specifies the major version of the engine that this option group should be associated with"
+  type        = string
+  default     = null
+}
+variable "family" {
+  description = "The family of the DB parameter group"
+  type        = string
+  default     = null
+}
