@@ -103,4 +103,6 @@ module "db_instance" {
 
   db_instance_tags = var.db_instance_tags
   tags             = var.tags
+
+  backup_restore_role_arn  = var.backup_restore_role_arn
 }
