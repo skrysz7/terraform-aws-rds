@@ -106,4 +106,9 @@ module "db_instance" {
 
   backup_restore_role_arn  = var.backup_restore_role_arn
   extra_options = var.extra_options
+  major_engine_version = var.major_engine_version
+  option_group_description = var.option_group_description
+  extra_parameters = var.extra_parameters
+  family = var.family
+  parameter_group_description = var.parameter_group_description
 }

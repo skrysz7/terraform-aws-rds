@@ -374,7 +374,6 @@ variable "option_group_name" {
   type        = string
   default     = null
 }
-
 variable "timezone" {
   description = "Time zone of the DB instance. timezone is currently only supported by Microsoft SQL Server. The timezone can only be set on creation. See MSSQL User Guide for more information."
   type        = string
@@ -557,7 +556,22 @@ variable "backup_restore_role_arn" {
   default     = null
 }
 variable "extra_options" {
-  description = "Custom options to be appended to default ones"
+  description = "Custom options to be appended to default ones in Option Group"
   type        = list(any)
   default     = []
+}
+variable "extra_parameters" {
+  description = "Custom parameters to be appended to default ones in Parameter Group"
+  type        = list(any)
+  default     = []
+}
+variable "option_group_description" {
+  description = "The description of the option group"
+  type        = string
+  default     = null
+}
+variable "parameter_group_description" {
+  description = "The description of the DB parameter group"
+  type        = string
+  default     = null
 }

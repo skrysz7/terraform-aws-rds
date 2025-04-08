@@ -80,7 +80,7 @@ variable "backup_restore_role_arn" {
   default     = null
 }
 variable "extra_options" {
-  description = "Custom options to be appended to default ones"
+  description = "Custom options to be appended to default ones in Option Group"
   type        = list(any)
   default     = []
 }

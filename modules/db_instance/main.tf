@@ -17,17 +17,20 @@ module "db_option_group" {
   engine_version  = var.engine_version
   backup_restore_role_arn  = var.backup_restore_role_arn
   extra_options = var.extra_options
+  major_engine_version = var.major_engine_version
+  option_group_description = var.option_group_description
 }
 
-# module "db_parameter_group" {
-#   source = "../db_parameter_group"
-#   identifier      = local.identifier
-#   name = var.option_group_name
-#   engine          = var.engine
-#   engine_version  = var.engine_version
-#   backup_restore_role_arn  = var.backup_restore_role_arn
-#   extra_parameters = var.extra_parameters
-# }
+module "db_parameter_group" {
+  source = "../db_parameter_group"
+  identifier      = local.identifier
+  name = var.parameter_group_name
+  engine          = var.engine
+  engine_version  = var.engine_version
+  extra_parameters = var.extra_parameters
+  family = var.family
+  parameter_group_description = var.parameter_group_description
+}
 
 resource "aws_db_instance" "this" {
   identifier               = local.identifier
