@@ -15,7 +15,7 @@ module "db_option_group" {
   name = var.option_group_name
   engine          = var.engine
   engine_version  = var.engine_version
-  backup_restore_role_arn  = "arn:aws:iam::342023131128:role/rds-mssql-s3-backup-role"
+  backup_restore_role_arn  = var.backup_restore_role_arn
 }
 
 resource "aws_db_instance" "this" {
