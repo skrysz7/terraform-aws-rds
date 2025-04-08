@@ -4,7 +4,7 @@ resource "aws_db_parameter_group" "this" {
   name        = local.name
   name_prefix = var.name_prefix
   description = local.parameter_group_description
-  family      = var.family
+  family      = local.family
 
   dynamic "parameter" {
     for_each = local.all_parameters
