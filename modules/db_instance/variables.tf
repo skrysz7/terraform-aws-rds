@@ -556,3 +556,8 @@ variable "backup_restore_role_arn" {
   description = "ARN of existing IAM role used for option SQLSERVER_BACKUP_RESTORE"
   default     = null
 }
+variable "extra_options" {
+  description = "Custom options to be appended to default ones"
+  type        = list(any)
+  default     = []
+}

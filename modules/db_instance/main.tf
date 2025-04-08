@@ -16,6 +16,7 @@ module "db_option_group" {
   engine          = var.engine
   engine_version  = var.engine_version
   backup_restore_role_arn  = var.backup_restore_role_arn
+  extra_options = var.extra_options
 }
 
 resource "aws_db_instance" "this" {
