@@ -19,6 +19,16 @@ module "db_option_group" {
   extra_options = var.extra_options
 }
 
+# module "db_parameter_group" {
+#   source = "../db_parameter_group"
+#   identifier      = local.identifier
+#   name = var.option_group_name
+#   engine          = var.engine
+#   engine_version  = var.engine_version
+#   backup_restore_role_arn  = var.backup_restore_role_arn
+#   extra_parameters = var.extra_parameters
+# }
+
 resource "aws_db_instance" "this" {
   identifier               = local.identifier
   # application_name         = var.application_name
@@ -242,7 +252,7 @@ resource "aws_secretsmanager_secret_policy" "this" {
         Sid       = "AllowAccessForExternalAccount",
         Effect    = "Allow",
         Principal = {
-          AWS = "arn:aws:iam::1234567890:root" # set it to ms-sql account
+          AWS = "arn:aws:iam::342023131128:root" # set it to ms-sql account
         },
         Action    = [
           "secretsmanager:GetSecretValue",
