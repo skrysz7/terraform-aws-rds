@@ -62,6 +62,10 @@ variable "engine" {
   type        = string
   description = "The database engine to use"
 }
+variable "engine_version" {
+  description = "The engine version to use"
+  type        = string
+}
 variable "identifier" {
   description = "The name of the RDS instance"
   type        = string
