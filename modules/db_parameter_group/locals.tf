@@ -120,7 +120,7 @@ locals {
     for name, param in local.merged_parameters_map : {
       name         = name
       value        = param.value
-      apply_method = param.apply_method
+      apply_method = lookup(param, "apply_method", null)
     }
   ]
 }
