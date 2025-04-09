@@ -51,6 +51,7 @@ variable "tags" {
   default     = {}
 }
 variable "extra_parameters" {
+  description = "Additional or overriding parameters"
   type    = list(object({
     name         = string
     value        = string
