@@ -122,5 +122,6 @@ module "db_instance" {
   parameter_group_create = var.parameter_group_create
   option_group_create = var.option_group_create
   kms_key_create = var.kms_key_create
-  sg_create = var.sg_create
+  security_group_create = var.security_group_create
+  security_group_tags = var.security_group_tags
 }

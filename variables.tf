@@ -786,8 +786,13 @@ variable "kms_key_create" {
   type        = bool
   default     = true
 }
-variable "sg_create" {
+variable "security_group_create" {
   description = "Whether to create the Security Group for RDS"
   type        = bool
   default     = true
+}
+variable "security_group_tags" {
+  description = "A mapping of tags to assign to S3 bucket"
+  type        = map(string)
+  default     = {}
 }

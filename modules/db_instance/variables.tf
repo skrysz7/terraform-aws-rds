@@ -236,7 +236,13 @@ variable "vpc_security_group_ids" {
   description = "List of VPC security groups to associate"
   type        = list(string)
   default     = []
+
+  validation {
+    condition     = var.sg_create || length(var.vpc_security_group_ids) > 0
+    error_message = "You must either enable security_group_create or provide vpc_security_group_ids."
+  }
 }
+
 
 variable "db_subnet_group_name" {
   description = "Name of DB subnet group. DB instance will be created in the VPC associated with the DB subnet group. If unspecified, will be created in the default VPC"
@@ -652,6 +658,11 @@ variable "s3_tags" {
   type        = map(string)
   default     = {}
 }
+variable "security_group_tags" {
+  description = "A mapping of tags to assign to S3 bucket"
+  type        = map(string)
+  default     = {}
+}
 variable "object_lock_enabled" {
   description = "ndicates whether this bucket has an Object Lock configuration enabled"
   type = bool
@@ -662,7 +673,7 @@ variable "kms_key_create" {
   type        = bool
   default     = true
 }
-variable "sg_create" {
+variable "security_group_create" {
   description = "Whether to create the Security Group for RDS"
   type        = bool
   default     = true

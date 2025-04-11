@@ -71,7 +71,7 @@ resource "aws_db_instance" "this" {
   manage_master_user_password         = var.manage_master_user_password
   master_user_secret_kms_key_id       = var.master_user_secret_kms_key_id
 
-  vpc_security_group_ids = var.vpc_security_group_ids
+  vpc_security_group_ids = compact(concat(var.vpc_security_group_ids, var.security_group_create ? [aws_security_group.rds[0].id] : []))
   db_subnet_group_name   = var.db_subnet_group_name
   parameter_group_name   = var.parameter_group_name
   option_group_name      = var.option_group_name
@@ -275,7 +275,7 @@ resource "aws_secretsmanager_secret_policy" "this" {
 }
 
 resource "aws_security_group" "rds" {
-  count = var.sg_create ? 1 : 0
+  count = var.security_group_create ? 1 : 0
   name        = local.sg_name
   description = "Security group for RDS ${local.identifier}"
   vpc_id      = data.aws_vpc.this.id
@@ -302,5 +302,5 @@ resource "aws_security_group" "rds" {
     }
   }
 
-  tags = merge(local.tags, var.extra_tags)
+  tags = merge(var.security_group_tags, {"name" = local.sg_name})
 }
