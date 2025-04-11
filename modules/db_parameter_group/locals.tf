@@ -27,52 +27,7 @@ locals {
   parameter_group_description = (
     var.parameter_group_description != null && var.parameter_group_description != "" ? var.parameter_group_description : ("Parameter group for ${var.identifier}")
   )
-  
-  
-  # default_parameters = contains(local.mssql_engines, var.engine) ? [
-  #   {
-  #     name  = "cost threshold for parallelism"
-  #     value = "50"
-  #   },
-  #   {
-  #     name  = "optimize for ad hoc workloads"
-  #     value = "1"
-  #   },
-  #   {
-  #     name  = "max degree of parallelism"
-  #     value = "2"
-  #   },
-  #   {
-  #     name         = "rds.force_ssl"
-  #     value        = "1"
-  #     apply_method = "pending-reboot"
-  #   }
-  # ] : contains(["postgres"], var.engine) ? [
-  #   {
-  #     name         = "log_filename"
-  #     value        = "postgresql.log.%Y-%m-%d-%H"
-  #     apply_method = "pending-reboot"
-  #   },
-  #   {
-  #     name  = "log_min_duration_statement"
-  #     value = "60000"
-  #   },
-  #   {
-  #     name  = "log_statement"
-  #     value = "all"
-  #   },
-  #   {
-  #     name         = "rds.force_ssl"
-  #     value        = "1"
-  #     apply_method = "pending-reboot"
-  #   },
-  #   {
-  #     name  = "pgaudit.log"
-  #     value = "role,ddl"
-  #   }
-  # ] : []
 
-  # all_parameters = concat(local.default_parameters, var.extra_parameters)
   default_parameters_map = contains(local.mssql_engines, var.engine) ? {
     "cost threshold for parallelism" = {
       value = "50"

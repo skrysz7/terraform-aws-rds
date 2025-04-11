@@ -13,8 +13,8 @@ variable "app_alias" {
 variable "environment" {
   type    = string
   validation {
-    condition     = contains(["devl", "intg", "nprd", "prod"], lower(var.environment))
-    error_message = "Invalid environment. Must be one of: devl, intg, nprd, prod."
+    condition     = contains(["poc", "test", "devl", "intg", "non-prod", "prod"], lower(var.environment))
+    error_message = "Invalid environment. Must be one of: poc, test, devl, intg, non-prod, prod."
   }
 }
 
@@ -61,7 +61,7 @@ variable "allocated_storage" {
 variable "storage_type" {
   description = "One of 'standard' (magnetic), 'gp2' (general purpose SSD), 'gp3' (new generation of general purpose SSD), or 'io1' (provisioned IOPS SSD). The default is 'io1' if iops is specified, 'gp2' if not. If you specify 'io1' or 'gp3' , you must also include a value for the 'iops' parameter"
   type        = string
-  default     = null
+  default     = "gp3"
 }
 
 variable "storage_throughput" {
@@ -363,7 +363,7 @@ variable "tags" {
   default     = {}
 }
 
-variable "db_instance_tags" {
+variable "extra_tags" {
   description = "A map of additional tags for the DB instance"
   type        = map(string)
   default     = {}
@@ -373,6 +373,11 @@ variable "option_group_name" {
   description = "Name of the DB option group to associate."
   type        = string
   default     = null
+}
+variable "option_group_create" {
+  description = "Whether to create the Option Group for RDS"
+  type        = bool
+  default     = true
 }
 variable "timezone" {
   description = "Time zone of the DB instance. timezone is currently only supported by Microsoft SQL Server. The timezone can only be set on creation. See MSSQL User Guide for more information."
@@ -401,7 +406,11 @@ variable "enabled_cloudwatch_logs_exports" {
 variable "timeouts" {
   description = "Updated Terraform resource management timeouts. Applies to `aws_db_instance` in particular to permit resource management times"
   type        = map(string)
-  default     = {}
+  default     = {
+    create = "3h"
+    delete = "3h"
+    update = "3h"
+  }
 }
 
 variable "deletion_protection" {
@@ -413,7 +422,7 @@ variable "deletion_protection" {
 variable "performance_insights_enabled" {
   description = "Specifies whether Performance Insights are enabled"
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "performance_insights_retention_period" {
@@ -575,6 +584,11 @@ variable "parameter_group_description" {
   type        = string
   default     = null
 }
+variable "parameter_group_create" {
+  description = "Whether to create the Parameter Group for RDS"
+  type        = bool
+  default     = true
+}
 variable "major_engine_version" {
   description = "Specifies the major version of the engine that this option group should be associated with"
   type        = string
@@ -584,4 +598,61 @@ variable "family" {
   description = "The family of the DB parameter group"
   type        = string
   default     = null
+}
+variable "finma_backup_enabled" {
+  description = "Specifies if FINMA backup should be enabled for the DB instance"
+  type = bool
+  default = false
+}
+variable "extra_ingress" {
+  type        = list(object({
+    from_port   = number
+    to_port     = number
+    protocol    = string
+    cidr_blocks = list(string)
+    description = optional(string)
+  }))
+  default     = []
+}
+
+variable "extra_egress" {
+  type        = list(object({
+    from_port   = number
+    to_port     = number
+    protocol    = string
+    cidr_blocks = list(string)
+    description = optional(string)
+  }))
+  default     = []
+}
+
+variable "sg_name" {
+  description = "Name of default security group"
+  type = string
+  default = null
+}
+variable "s3_name" {
+  description = "Name of S3 bucket"
+  type = string
+  default = null
+}
+variable "s3_create" {
+  description = "Whether to create the S3 bucket for RDS"
+  type        = bool
+  default     = true
+}
+variable "s3_tags" {
+  description = "A mapping of tags to assign to S3 bucket"
+  type        = map(string)
+  default     = {}
+}
+variable "object_lock_enabled" {
+  description = "ndicates whether this bucket has an Object Lock configuration enabled"
+  type = bool
+  default = null
+}
+variable "kms_key_create" {
+  description = "Whether to create the KMS key for RDS"
+  type        = bool
+  default     = true
 }

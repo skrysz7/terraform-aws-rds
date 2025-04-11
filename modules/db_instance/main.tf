@@ -1,8 +1,9 @@
 # Ref. https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html#genref-aws-service-namespaces
-data "aws_partition" "current" {}
+# data "aws_partition" "current" {}
 
 module "db_kms_key" {
   source            = "../db_kms_key"
+  count = var.kms_key_create ? 1 : 0
   application_name  = var.application_name
   identifier   = local.identifier
   policy = var.kms_policy
@@ -11,6 +12,7 @@ module "db_kms_key" {
 
 module "db_option_group" {
   source = "../db_option_group"
+  count  = var.option_group_create && contains(local.option_group_engines, var.engine) ? 1 : 0
   identifier      = local.identifier
   name = var.option_group_name
   engine          = var.engine
@@ -23,6 +25,7 @@ module "db_option_group" {
 
 module "db_parameter_group" {
   source = "../db_parameter_group"
+  count = var.parameter_group_create ? 1 : 0
   identifier      = local.identifier
   name = var.parameter_group_name
   engine          = var.engine
@@ -32,6 +35,14 @@ module "db_parameter_group" {
   parameter_group_description = var.parameter_group_description
 }
 
+module "rds_s3" {
+  count  = var.s3_create ? 1 : 0
+  source = "../db_s3_bucket"
+
+  bucket = local.s3_name
+  tags        = var.s3_tags
+  object_lock_enabled = var.object_lock_enabled
+}
 resource "aws_db_instance" "this" {
   identifier               = local.identifier
   # application_name         = var.application_name
@@ -47,9 +58,8 @@ resource "aws_db_instance" "this" {
 
   db_name                             = var.db_name
   # username                            = !local.is_replica ? var.username : null
-  # password                            = !local.is_replica && var.manage_master_user_password ? null : var.password
+  password                            = var.manage_master_user_password ? null : var.password
   username = var.username
-  password = var.password
   port                                = var.port
   domain                              = var.domain
   domain_auth_secret_arn              = var.domain_auth_secret_arn
@@ -140,10 +150,10 @@ resource "aws_db_instance" "this" {
     }
   }
 
-  tags = merge(var.tags, var.db_instance_tags, 
-          {
-           "xxx:service:name" = var.application_name 
-          })
+  tags = merge(local.tags, var.extra_tags)
+          # {
+          #  "xxx:service:name" = var.application_name 
+          # })
 
   depends_on = [aws_cloudwatch_log_group.this]
 
@@ -265,4 +275,34 @@ resource "aws_secretsmanager_secret_policy" "this" {
       }
     ]
   })
+}
+
+resource "aws_security_group" "rds" {
+  name        = local.sg_name
+  description = "Security group for RDS ${local.identifier}"
+  vpc_id      = data.aws_vpc.this.id
+
+  dynamic "ingress" {
+    for_each = local.ingress_rules
+    content {
+      from_port   = ingress.value.from_port
+      to_port     = ingress.value.to_port
+      protocol    = ingress.value.protocol
+      cidr_blocks = ingress.value.cidr_blocks
+      description = lookup(ingress.value, "description", null)
+    }
+  }
+
+  dynamic "egress" {
+    for_each = local.egress_rules
+    content {
+      from_port   = egress.value.from_port
+      to_port     = egress.value.to_port
+      protocol    = egress.value.protocol
+      cidr_blocks = egress.value.cidr_blocks
+      description = lookup(egress.value, "description", null)
+    }
+  }
+
+  tags = merge(local.tags, var.extra_tags)
 }

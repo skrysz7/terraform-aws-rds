@@ -1,5 +1,5 @@
 resource "aws_db_option_group" "this" {
-  count = contains(local.option_group_engines, var.engine) ? 1 : 0  # Create option group only for supported engines
+  # count = contains(local.option_group_engines, var.engine) ? 1 : 0  # Create option group only for supported engines
   
   name                     = local.name
   name_prefix              = var.name_prefix

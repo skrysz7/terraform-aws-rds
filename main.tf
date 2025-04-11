@@ -18,8 +18,8 @@ module "db_instance" {
   license_model                       = var.license_model
   db_name                             = var.db_name
   username                            = var.username
-  #password                            = var.manage_master_user_password ? null : var.password
-  password                            = var.password
+  password                            = var.manage_master_user_password ? null : var.password
+  #password                            = var.password
   port                                = var.port
   domain                              = var.domain
   domain_auth_secret_arn              = var.domain_auth_secret_arn
@@ -101,9 +101,10 @@ module "db_instance" {
   restore_to_point_in_time = var.restore_to_point_in_time
   s3_import                = var.s3_import
 
-  db_instance_tags = var.db_instance_tags
+  extra_tags = var.extra_tags
   tags             = var.tags
 
+  finma_backup_enabled = var.finma_backup_enabled
   backup_restore_role_arn  = var.backup_restore_role_arn
   extra_options = var.extra_options
   major_engine_version = var.major_engine_version
@@ -111,4 +112,14 @@ module "db_instance" {
   extra_parameters = var.extra_parameters
   family = var.family
   parameter_group_description = var.parameter_group_description
+  extra_ingress = var.extra_ingress
+  extra_egress = var.extra_egress
+  sg_name = var.sg_name
+  s3_name = var.s3_name
+  s3_create = var.s3_create
+  s3_tags = var.s3_tags
+  object_lock_enabled = var.object_lock_enabled
+  parameter_group_create = var.parameter_group_create
+  option_group_create = var.option_group_create
+  kms_key_create = var.kms_key_create
 }

@@ -1,5 +1,5 @@
 resource "aws_db_parameter_group" "this" {
-  count = var.create ? 1 : 0
+  # count = var.create ? 1 : 0
 
   name        = local.name
   name_prefix = var.name_prefix
