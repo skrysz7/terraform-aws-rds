@@ -37,10 +37,10 @@ variable "custom_iam_instance_profile" {
   type        = string
   default     = null
 }
-variable "application_name" {
-  description = "Application name used in various resource descriptions"
-  type        = string
-}
+# variable "application_name" {
+#   description = "Application name used in various resource descriptions"
+#   type        = string
+# }
 variable "kms_alias_name" {
   description = "Custom KMS alias name"
   type        = string

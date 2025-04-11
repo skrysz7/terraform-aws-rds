@@ -38,10 +38,10 @@ variable "name" {
 #   type        = string
 #   default     = null
 # }
-variable "application_name" {
-  description = "Application name to be included in the KMS key description"
-  type        = string
-}
+# variable "application_name" {
+#   description = "Application name to be included in the KMS key description"
+#   type        = string
+# }
 variable "identifier" {
   description = "The name of the RDS instance"
   type        = string

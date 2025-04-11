@@ -4,7 +4,7 @@
 module "db_kms_key" {
   source            = "../db_kms_key"
   count = var.kms_key_create ? 1 : 0
-  application_name  = var.application_name
+  # application_name  = var.application_name
   identifier   = local.identifier
   policy = var.kms_policy
   name       = var.kms_alias_name

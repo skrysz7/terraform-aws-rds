@@ -1,5 +1,5 @@
 resource "aws_kms_key" "this" {
-  description             = var.description != null ? var.description : "Symmetric AWS CMK for RDS Storage for ${var.application_name}"
+  description             = var.description != null ? var.description : "Symmetric AWS CMK for RDS Storage for ${var.identifier}"
   enable_key_rotation = var.enable_key_rotation
   rotation_period_in_days = var.rotation_period_in_days
   deletion_window_in_days = var.deletion_window_in_days
