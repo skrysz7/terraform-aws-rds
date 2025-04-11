@@ -236,11 +236,6 @@ variable "vpc_security_group_ids" {
   description = "List of VPC security groups to associate"
   type        = list(string)
   default     = []
-
-  validation {
-    condition     = var.sg_create || length(var.vpc_security_group_ids) > 0
-    error_message = "You must either enable security_group_create or provide vpc_security_group_ids."
-  }
 }
 
 
