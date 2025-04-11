@@ -738,7 +738,13 @@ variable "extra_egress" {
     cidr_blocks = list(string)
     description = optional(string)
   }))
-  default     = []
+  default     = [{
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "Allow all outbound traffic"
+  }]
 }
 variable "sg_name" {
   description = "Name of default security group"
@@ -777,6 +783,11 @@ variable "parameter_group_create" {
 }
 variable "kms_key_create" {
   description = "Whether to create the KMS key for RDS"
+  type        = bool
+  default     = true
+}
+variable "sg_create" {
+  description = "Whether to create the Security Group for RDS"
   type        = bool
   default     = true
 }

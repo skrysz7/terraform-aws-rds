@@ -141,9 +141,9 @@ locals {
     "oracle-se2" = "1521"
   }
 
-  # port = (
-  #   var.port != null && var.port != "" ? var.port : lookup(local.db_port_mapping, var.engine, null)
-  # )
+  port = (
+    var.port != null && var.port != "" ? var.port : lookup(local.db_port_mapping, var.engine, null)
+  )
   default_ingress = [{
     from_port   = var.port
     to_port     = var.port
