@@ -55,7 +55,7 @@ locals {
   )
   
   maintenance_window_mapping = {
-    "prod"  = "Thu:21:00-Fri:00:00"
+    "prod"  = "Thu:01:00-Fri:04:00"
     "non-prod"  = "Tue:00:00-Tue:03:00"
     "intg"  = "Tue:00:00-Tue:03:00"
     "devl"  = "Tue:00:00-Tue:03:00"
