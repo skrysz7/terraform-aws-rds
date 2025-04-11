@@ -21,7 +21,7 @@ module "db_option_group" {
   extra_options = var.extra_options
   major_engine_version = var.major_engine_version
   option_group_description = var.option_group_description
-  sg_ids = [local.sg_name]
+  sg_ids = [aws_security_group.this.id]
 }
 
 module "db_parameter_group" {
@@ -276,7 +276,7 @@ resource "aws_secretsmanager_secret_policy" "this" {
   })
 }
 
-resource "aws_security_group" "rds" {
+resource "aws_security_group" "this" {
   count = var.security_group_create ? 1 : 0
   name        = local.sg_name
   description = "Security group for RDS ${local.identifier}"

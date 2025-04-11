@@ -673,8 +673,3 @@ variable "security_group_create" {
   type        = bool
   default     = true
 }
-variable "sg_ids" {
-  description = "List of VPC Security Group IDs for SSL option (Oracle)"
-  type        = list(string)
-  default     = []
-}
