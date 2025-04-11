@@ -3,7 +3,6 @@ module "db_instance" {
   id                                  = var.id
   kms_policy                          = var.kms_policy
   kms_alias_name                      = var.kms_alias_name
-  application_name                    = var.application_name
   app_alias                           = var.app_alias
   identifier                          = var.identifier
   environment                         = var.environment
