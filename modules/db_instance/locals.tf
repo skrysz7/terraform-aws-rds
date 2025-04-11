@@ -100,7 +100,7 @@ locals {
     "sqlserver-se" = "license-included"
     "sqlserver-web" = "license-included"
     "postgres" = "postgresql-license"
-    "oracle-ee" = "license-included"
+    "oracle-ee" = "bring-your-own-license"
     "oracle-se" = "license-included"
     "oracle-se1" = "license-included"
     "oracle-se2" = "license-included"
