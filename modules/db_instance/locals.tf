@@ -130,23 +130,23 @@ locals {
   }
 
   db_port_mapping = {
-    "sqlserver-ee" = "1433"
-    "sqlserver-ex" = "1433"
-    "sqlserver-se" = "1433"
-    "sqlserver-web" = "1433"
-    "postgres" = "5432"
-    "oracle-ee" = "1521"
-    "oracle-se" = "1521"
-    "oracle-se1" = "1521"
-    "oracle-se2" = "1521"
+    "sqlserver-ee" = 1433
+    "sqlserver-ex" = 1433
+    "sqlserver-se" = 1433
+    "sqlserver-web" = 1433
+    "postgres" = 5432
+    "oracle-ee" = 1521
+    "oracle-se" = 1521
+    "oracle-se1" = 1521
+    "oracle-se2" = 1521
   }
 
   port = (
-    var.port != null && var.port != "" ? var.port : lookup(local.db_port_mapping, var.engine, null)
+    var.port != null && var.port != "" ? var.port : lookup(local.db_port_mapping, var.engine)
   )
   default_ingress = [{
-    from_port   = var.port
-    to_port     = var.port
+    from_port   = local.port
+    to_port     = local.port
     protocol    = "tcp"
     cidr_blocks = [data.aws_vpc.this.cidr_block]
     description = "Allow RDS traffic from inside VPC"
