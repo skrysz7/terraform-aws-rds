@@ -22,7 +22,8 @@ locals {
   # engine_major_version = split(".", var.engine_version)[0]
   # engine_minor_version = tostring(tonumber(split(".", var.engine_version)[1]))
 
-  family = contains(local.mssql_engines, var.engine) ? "${var.engine}-${split(".", var.engine_version)[0]}.${tostring(tonumber(split(".", var.engine_version)[1]))}" : contains(["postgres"], var.engine) ? "postgres${split(".", var.engine_version)[0]}" : null
+  #family = contains(local.mssql_engines, var.engine) ? "${var.engine}-${split(".", var.engine_version)[0]}.${tostring(tonumber(split(".", var.engine_version)[1]))}" : contains(["postgres"], var.engine) ? "postgres${split(".", var.engine_version)[0]}" : null
+  family = contains(local.mssql_engines, var.engine) ? "${var.engine}-${split(".", var.engine_version)[0]}.${tostring(tonumber(split(".", var.engine_version)[1]))}" : contains(["postgres"], var.engine) ? "postgres${split(".", var.engine_version)[0]}" : contains(local.oracle_engines, var.engine) ? "${var.engine}-${split(".", var.engine_version)[0]}" : null
 
   parameter_group_description = (
     var.parameter_group_description != null && var.parameter_group_description != "" ? var.parameter_group_description : ("Parameter group for ${var.identifier}")
