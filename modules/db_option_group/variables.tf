@@ -84,8 +84,8 @@ variable "extra_options" {
   type        = list(any)
   default     = []
 }
-variable "sg_name" {
-  description = "Name of default security group"
-  type = string
-  default = null
+variable "sg_ids" {
+  description = "List of Security Group IDs"
+  type        = list(string)
+  default     = []
 }
