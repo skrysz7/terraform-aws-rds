@@ -303,5 +303,5 @@ resource "aws_security_group" "rds" {
     }
   }
 
-  tags = merge(var.security_group_tags, {"name" = local.sg_name})
+  tags = merge(var.security_group_tags, {"Name" = local.sg_name})
 }
