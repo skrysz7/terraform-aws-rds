@@ -122,6 +122,13 @@ output "db_instance_master_user_secret_arn" {
   description = "The ARN of the master user secret (Only available when manage_master_user_password is set to true)"
   value = aws_db_instance.this.master_user_secret[0].secret_arn
 }
+output "enabled_cloudwatch_logs_exports" {
+  value = var.enabled_cloudwatch_logs_exports
+}
+output "cloudwatch_log_group_keys" {
+  value = [for log in var.enabled_cloudwatch_logs_exports : log if var.create_cloudwatch_log_group]
+}
+
 
 
 
