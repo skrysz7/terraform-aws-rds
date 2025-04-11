@@ -125,7 +125,7 @@ locals {
   tags = {
     "glo:m:any:stage" = var.environment
     "xms:xxx:backup_policy" = lookup(local.backup_policy_mapping, var.environment, null)
-    "xms:xxx:backup_enabled" = var.backup_retention_period > 0 ? "true" : "false"
+    "xms:xxx:backup_enabled" = local.backup_retention_period > 0 ? "true" : "false"
     "xms:xxx:finma:backup:enabled" = var.finma_backup_enabled
   }
 

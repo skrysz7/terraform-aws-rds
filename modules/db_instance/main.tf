@@ -111,7 +111,7 @@ resource "aws_db_instance" "this" {
 
   replicate_source_db     = var.replicate_source_db
   replica_mode            = var.replica_mode
-  backup_retention_period = local.backup_retention_period
+  backup_retention_period = var.backup_retention_period != null && var.backup_retention_period != "" ? var.backup_retention_period : local.backup_retention_period
   backup_window           = local.backup_window
   max_allocated_storage   = var.max_allocated_storage
   monitoring_interval     = var.monitoring_interval
