@@ -21,7 +21,7 @@ module "db_option_group" {
   extra_options = var.extra_options
   major_engine_version = var.major_engine_version
   option_group_description = var.option_group_description
-  sg_name = local.sg_name
+  sg_ids = [local.sg_name]
 }
 
 module "db_parameter_group" {
