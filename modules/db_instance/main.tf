@@ -35,12 +35,11 @@ module "db_parameter_group" {
   parameter_group_description = var.parameter_group_description
 }
 
-module "rds_s3" {
+module "db_s3_bucket" {
   count  = var.s3_create ? 1 : 0
   source = "../db_s3_bucket"
-
-  bucket = local.s3_name
-  tags        = var.s3_tags
+  s3_name = local.s3_name
+  s3_tags        = var.s3_tags
   object_lock_enabled = var.object_lock_enabled
 }
 resource "aws_db_instance" "this" {
