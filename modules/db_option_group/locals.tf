@@ -33,30 +33,29 @@ locals {
         }
       ]
     }
+  ] : contains(local.oracle_engines, var.engine) ? [
+    {
+      option_name                    = "SSL"
+      port                           = null
+      version                        = null
+      db_security_group_memberships  = null
+      vpc_security_group_memberships = null
+      option_settings = [
+        {
+          name  = "SQLNET.SSL_VERSION"
+          value = "1.2"
+        },
+        {
+          name  = "SQLNET.CIPHER_SUITE"
+          value = "SSL_RSA_WITH_AES_256_CBC_SHA"
+        },
+        {
+          name  = "FIPS.SSLFIPS_140"
+          value = "true"
+        }
+      ]
+    }
   ] : []
-  # ] : contains(local.oracle_engines, var.engine) ? [
-  #   {
-  #     option_name                    = "SSL"
-  #     port                           = null
-  #     version                        = null
-  #     db_security_group_memberships  = null
-  #     vpc_security_group_memberships = null
-  #     option_settings = [
-  #       {
-  #         name  = "SQLNET.SSL_VERSION"
-  #         value = "1.2"
-  #       },
-  #       {
-  #         name  = "SQLNET.CIPHER_SUITE"
-  #         value = "SSL_RSA_WITH_AES_256_CBC_SHA"
-  #       },
-  #       {
-  #         name  = "FIPS.SSLFIPS_140"
-  #         value = "true"
-  #       }
-  #     ]
-  #   }
-  # ] : []
 
   all_options = concat(local.default_options, var.extra_options)
 
