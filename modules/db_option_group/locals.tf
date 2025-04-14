@@ -38,8 +38,8 @@ locals {
       option_name                    = "SSL"
       port                           = null
       version                        = null
-      db_security_group_memberships  = var.sg_ids
-      vpc_security_group_memberships = null
+      db_security_group_memberships  = null
+      vpc_security_group_memberships = var.sg_ids
       option_settings = [
         {
           name  = "SQLNET.SSL_VERSION"
