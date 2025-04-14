@@ -39,7 +39,7 @@ resource "aws_db_option_group" "this" {
     delete = lookup(var.timeouts, "delete", null)
   }
 
-  lifecycle {
-    create_before_destroy = true
-  }
+  # lifecycle {
+  #   create_before_destroy = true
+  # }
 }

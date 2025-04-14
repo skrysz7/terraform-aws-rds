@@ -31,7 +31,7 @@ resource "aws_db_parameter_group" "this" {
     },
   )
 
-  lifecycle {
-    create_before_destroy = true
-  }
+  # lifecycle {
+  #   create_before_destroy = true
+  # }
 }
