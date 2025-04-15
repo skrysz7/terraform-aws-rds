@@ -101,7 +101,7 @@ locals {
     "test"     = 14
     "poc"      = 14
   }
-  cloud_watch_log_retention = var.cloudwatch_log_group_retention_in_days != null && var.cloudwatch_log_group_retention_in_days != "" ? var.cloudwatch_log_group_retention_in_days : lookup(local.cloud_watch_log_retention_mapping, var.environment, null)
+  cloud_watch_log_retention = coalesce(var.cloudwatch_log_group_retention_in_days, lookup(local.cloud_watch_log_retention_mapping, var.environment, null))
 
   license_model_mapping = {
     "sqlserver-ee"  = "license-included"
