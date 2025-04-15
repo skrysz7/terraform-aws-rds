@@ -109,36 +109,26 @@ output "db_instance_master_user_secret_arn" {
   value       = module.db_instance.db_instance_master_user_secret_arn
 }
 
-output "db_subnet_group_id" {
-  description = "The db subnet group name"
-  value       = module.db_subnet_group.db_subnet_group_id
-}
+# output "db_parameter_group_id" {
+#   description = "The db parameter group id"
+#   value       = module.db_parameter_group.db_parameter_group_id
+# }
 
-output "db_subnet_group_arn" {
-  description = "The ARN of the db subnet group"
-  value       = module.db_subnet_group.db_subnet_group_arn
-}
+# output "db_parameter_group_arn" {
+#   description = "The ARN of the db parameter group"
+#   value       = module.db_parameter_group.db_parameter_group_arn
+# }
 
-output "db_parameter_group_id" {
-  description = "The db parameter group id"
-  value       = module.db_parameter_group.db_parameter_group_id
-}
+# # DB option group
+# output "db_option_group_id" {
+#   description = "The db option group id"
+#   value       = module.db_option_group.db_option_group_id
+# }
 
-output "db_parameter_group_arn" {
-  description = "The ARN of the db parameter group"
-  value       = module.db_parameter_group.db_parameter_group_arn
-}
-
-# DB option group
-output "db_option_group_id" {
-  description = "The db option group id"
-  value       = module.db_option_group.db_option_group_id
-}
-
-output "db_option_group_arn" {
-  description = "The ARN of the db option group"
-  value       = module.db_option_group.db_option_group_arn
-}
+# output "db_option_group_arn" {
+#   description = "The ARN of the db option group"
+#   value       = module.db_option_group.db_option_group_arn
+# }
 
 ################################################################################
 # CloudWatch Log Group
@@ -147,15 +137,6 @@ output "db_option_group_arn" {
 output "db_instance_cloudwatch_log_groups" {
   description = "Map of CloudWatch log groups created and their attributes"
   value       = module.db_instance.db_instance_cloudwatch_log_groups
-}
-
-################################################################################
-# DB Instance Role Association
-################################################################################
-
-output "db_instance_role_associations" {
-  description = "A map of DB Instance Identifiers and IAM Role ARNs separated by a comma"
-  value       = module.db_instance_role_association
 }
 
 ################################################################################
