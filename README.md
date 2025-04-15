@@ -77,7 +77,7 @@ module "test_rds_mssql" {
       description = "Test adding extra ingress"
     }
   ]
-} 
+}
 ```
 
 ## Requirements
