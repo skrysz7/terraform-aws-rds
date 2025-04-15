@@ -8,7 +8,7 @@ Root module calls these modules:
 - db_option_group - creates RDS DB option group
 - db_s3_bucket - creates S3 Bucket for RDS backups
 
-## Example of caller code
+## Example of caller code 
 ```
 module "test_rds_mssql" {
   source = "github.com/skrysz7/terraform-aws-rds.git"
