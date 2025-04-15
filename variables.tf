@@ -1,5 +1,5 @@
 variable "environment" {
-  type    = string
+  type = string
   validation {
     condition     = contains(["poc", "test", "devl", "intg", "non-prod", "prod"], lower(var.environment))
     error_message = "Invalid environment. Must be one of: poc, test, devl, intg, non-prod, prod."
@@ -183,7 +183,7 @@ variable "copy_tags_to_snapshot" {
   default     = true
 }
 
-variable "final_snapshot_identifier_prefix" {
+variable "final_snapshot_identifier" {
   description = "The name which is prefixed to the final snapshot on cluster destroy"
   type        = string
   default     = "final"
@@ -383,8 +383,8 @@ variable "extra_tags" {
 }
 variable "finma_backup_enabled" {
   description = "Specifies if FINMA backup should be enabled for the DB instance"
-  type = bool
-  default = false
+  type        = bool
+  default     = false
 }
 variable "db_option_group_tags" {
   description = "Additional tags for the DB option group"
@@ -547,7 +547,7 @@ variable "enabled_cloudwatch_logs_exports" {
 variable "timeouts" {
   description = "Updated Terraform resource management timeouts. Applies to `aws_db_instance` in particular to permit resource management times"
   type        = map(string)
-  default     = {
+  default = {
     create = "3h"
     delete = "3h"
     update = "3h"
@@ -627,7 +627,7 @@ variable "create_cloudwatch_log_group" {
 variable "cloudwatch_log_group_retention_in_days" {
   description = "The number of days to retain CloudWatch logs for the DB instance"
   type        = number
-  default     = 7
+  default     = null
 }
 
 variable "cloudwatch_log_group_kms_key_id" {
@@ -720,25 +720,25 @@ variable "extra_parameters" {
   default     = []
 }
 variable "extra_ingress" {
-  type        = list(object({
+  type = list(object({
     from_port   = number
     to_port     = number
     protocol    = string
     cidr_blocks = list(string)
     description = optional(string)
   }))
-  default     = []
+  default = []
 }
 
 variable "extra_egress" {
-  type        = list(object({
+  type = list(object({
     from_port   = number
     to_port     = number
     protocol    = string
     cidr_blocks = list(string)
     description = optional(string)
   }))
-  default     = [{
+  default = [{
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
@@ -748,18 +748,18 @@ variable "extra_egress" {
 }
 variable "sg_name" {
   description = "Name of default security group"
-  type = string
-  default = null
+  type        = string
+  default     = null
 }
 variable "s3_name" {
   description = "Name of S3 bucket"
-  type = string
-  default = null
+  type        = string
+  default     = null
 }
 variable "s3_create" {
   description = "Whether to create the S3 bucket for RDS"
   type        = bool
-  default     = true
+  default     = false
 }
 variable "s3_tags" {
   description = "A mapping of tags to assign to S3 bucket"
@@ -768,8 +768,8 @@ variable "s3_tags" {
 }
 variable "object_lock_enabled" {
   description = "ndicates whether this bucket has an Object Lock configuration enabled"
-  type = bool
-  default = null
+  type        = bool
+  default     = null
 }
 variable "option_group_create" {
   description = "Whether to create the Option Group for RDS"
@@ -784,7 +784,7 @@ variable "parameter_group_create" {
 variable "kms_key_create" {
   description = "Whether to create the KMS key for RDS"
   type        = bool
-  default     = true
+  default     = false
 }
 variable "security_group_create" {
   description = "Whether to create the Security Group for RDS"
@@ -795,4 +795,8 @@ variable "security_group_tags" {
   description = "A mapping of tags to assign to S3 bucket"
   type        = map(string)
   default     = {}
+}
+variable "leanixid" {
+  type = string
+  description = "ID value from LeanIX (36 characters)"
 }

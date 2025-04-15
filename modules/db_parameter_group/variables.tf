@@ -52,7 +52,7 @@ variable "tags" {
 }
 variable "extra_parameters" {
   description = "Additional or overriding parameters"
-  type    = list(object({
+  type = list(object({
     name         = string
     value        = string
     apply_method = optional(string)

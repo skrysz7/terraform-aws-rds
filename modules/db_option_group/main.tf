@@ -1,6 +1,6 @@
 resource "aws_db_option_group" "this" {
   # count = contains(local.option_group_engines, var.engine) ? 1 : 0  # Create option group only for supported engines
-  
+
   name                     = local.name
   name_prefix              = var.name_prefix
   option_group_description = local.option_group_description
@@ -25,7 +25,7 @@ resource "aws_db_option_group" "this" {
       }
     }
   }
-  
+
   skip_destroy = var.skip_destroy
 
   tags = merge(
@@ -38,8 +38,4 @@ resource "aws_db_option_group" "this" {
   timeouts {
     delete = lookup(var.timeouts, "delete", null)
   }
-
-  # lifecycle {
-  #   create_before_destroy = true
-  # }
 }
