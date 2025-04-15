@@ -2,11 +2,11 @@
 # AWS RDS Terraform module 
 Root module calls these modules:
 
-db_instance - creates RDS DB instance
-db_kms_key - creates AWS CMK for RDS Storage
-db_parameter_group - creates RDS DB parameter group
-db_option_group - creates RDS DB option group
-db_s3_bucket - creates S3 Buckets for RDS backups
+- db_instance - creates RDS DB instance
+- db_kms_key - creates AWS CMK for RDS Storage
+- db_parameter_group - creates RDS DB parameter group
+- db_option_group - creates RDS DB option group
+- db_s3_bucket - creates S3 Buckets for RDS backups
 
 ## Requirements
 
