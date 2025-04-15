@@ -639,7 +639,7 @@ variable "s3_name" {
 variable "s3_create" {
   description = "Whether to create the S3 bucket for RDS"
   type        = bool
-  default     = false
+  default     = true
 }
 variable "s3_tags" {
   description = "A mapping of tags to assign to S3 bucket"
@@ -659,7 +659,7 @@ variable "object_lock_enabled" {
 variable "kms_key_create" {
   description = "Whether to create the KMS key for RDS"
   type        = bool
-  default     = false
+  default     = true
 }
 variable "security_group_create" {
   description = "Whether to create the Security Group for RDS"
