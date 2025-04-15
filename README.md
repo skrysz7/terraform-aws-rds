@@ -6,7 +6,79 @@ Root module calls these modules:
 - db_kms_key - creates AWS CMK for RDS Storage
 - db_parameter_group - creates RDS DB parameter group
 - db_option_group - creates RDS DB option group
-- db_s3_bucket - creates S3 Buckets for RDS backups
+- db_s3_bucket - creates S3 Bucket for RDS backups
+
+## Example of caller code
+```
+module "test_rds_mssql" {
+  source = "github.com/skrysz7/terraform-aws-rds.git"
+  # version = "0.1"
+  environment            = "devl"
+  db_subnet_group_name   = aws_db_subnet_group.rds_db_subnet_group.name
+  vpc_security_group_ids = [aws_security_group.fw-rds-mssql-dba.id]
+  #id               = "23"
+  app_alias                       = "compan"
+  instance_class                  = "db.t3.micro"
+  engine                          = "sqlserver-ex"
+  engine_version                  = "15.00.4420.2.v1"
+  enabled_cloudwatch_logs_exports = ["error"]
+  deletion_protection             = false
+  allocated_storage               = "20"
+  max_allocated_storage           = "30"
+  skip_final_snapshot             = true
+  leanixid                        = "1234567890"
+  master_user_secret_kms_key_id   = aws_kms_key.cmk-rds-secret.arn
+  performance_insights_kms_key_id = aws_kms_key.cmk-rds-pi.arn
+  backup_restore_role_arn         = aws_iam_role.rds_mssql_s3_backup_role.arn
+  extra_tags = {
+    "xms:owner"              = "devteam"
+    "xms:xxx:backup_enabled" = "false"
+  }
+  option_group_create    = false
+  parameter_group_create = false
+  s3_create              = false
+  extra_options = [
+    {
+      option_name = "SQLSERVER_AUDIT"
+      option_settings = [
+        {
+          name  = "IAM_ROLE_ARN"
+          value = "arn:aws:iam::342023131128:role/rds-mssql-s3-backup-role"
+        },
+        {
+          name  = "S3_BUCKET_ARN"
+          value = "arn:aws:s3:::skrysz7-terraform-state-file"
+        }
+      ]
+    }
+  ]
+  extra_parameters = [
+    {
+      name  = "clr enabled"
+      value = "1"
+    },
+    {
+      name         = "remote access"
+      value        = "0"
+      apply_method = "pending-reboot"
+    },
+    # {
+    #   name         = "rds.force_ssl"
+    #   value        = "1"
+    #   apply_method = "pending-reboot"
+    # }
+  ]
+  extra_ingress = [
+    {
+      from_port   = 443
+      to_port     = 443
+      protocol    = "TCP"
+      cidr_blocks = ["10.0.0.0/24"]
+      description = "Test adding extra ingress"
+    }
+  ]
+} 
+```
 
 ## Requirements
 
