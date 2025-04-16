@@ -35,8 +35,8 @@ module "db_parameter_group" {
 module "db_s3_bucket" {
   count               = var.create_s3_bucket ? 1 : 0
   source              = "../db_s3_bucket"
-  s3_name             = local.s3_name
-  s3_tags             = var.s3_tags
+  s3_bucket_name      = local.s3_bucket_name
+  s3_bucket_tags      = var.s3_bucket_tags
   object_lock_enabled = var.object_lock_enabled
   s3_bucket_policy    = var.s3_bucket_policy
 }
@@ -189,7 +189,7 @@ resource "aws_secretsmanager_secret_policy" "this" {
 
 resource "aws_security_group" "this" {
   count       = var.security_group_create ? 1 : 0
-  name        = local.sg_name
+  name        = local.security_group_name
   description = "Security group for RDS ${local.identifier}"
   vpc_id      = data.aws_vpc.this.id
 
@@ -215,5 +215,5 @@ resource "aws_security_group" "this" {
     }
   }
 
-  tags = merge(var.security_group_tags, { "Name" = local.sg_name })
+  tags = merge(var.security_group_tags, { "Name" = local.security_group_name })
 }

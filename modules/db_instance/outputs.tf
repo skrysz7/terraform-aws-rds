@@ -114,21 +114,10 @@ output "enabled_cloudwatch_logs_exports" {
 output "cloudwatch_log_group_keys" {
   value = [for log in var.enabled_cloudwatch_logs_exports : log if var.create_cloudwatch_log_group]
 }
-
-
-# ################################################################################
-# # CloudWatch Log Group
-# ################################################################################
-
 output "db_instance_cloudwatch_log_groups" {
   description = "Map of CloudWatch log groups created and their attributes"
   value       = aws_cloudwatch_log_group.this
 }
-
-# ################################################################################
-# # Managed Secret Rotation
-# ################################################################################
-
 output "db_instance_secretsmanager_secret_rotation_enabled" {
   description = "Specifies whether automatic rotation is enabled for the secret"
   value       = try(aws_secretsmanager_secret_rotation.this.rotation_enabled, null)

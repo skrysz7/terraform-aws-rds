@@ -1,9 +1,3 @@
-variable "create" {
-  description = "Whether to create this resource or not?"
-  type        = bool
-  default     = true
-}
-
 variable "name" {
   description = "The name of the DB parameter group"
   type        = string

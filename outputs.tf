@@ -111,3 +111,11 @@ output "db_instance_secretsmanager_secret_rotation_enabled" {
   description = "Specifies whether automatic rotation is enabled for the secret"
   value       = module.db_instance.db_instance_secretsmanager_secret_rotation_enabled
 }
+output "kms_key_arn" {
+  description = "KMS key arn"
+  value       = module.db_kms_key.kms_key_arn
+}
+output "bucket_name" {
+  description = "S3 Bucket name"
+  value       = module.db_s3_bucket.bucket_name
+}

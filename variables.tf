@@ -243,7 +243,7 @@ variable "network_type" {
   default     = null
 }
 variable "leanixid" {
-  type = string
+  type        = string
   description = "ID value from LeanIX (36 characters)"
 }
 ################################################################################
@@ -415,10 +415,10 @@ variable "performance_insights_kms_key_id" {
 ################################################################################
 variable "s3_bucket_policy" {
   description = "S3 Bucket policy"
-  type = string
-  default = ""  
+  type        = string
+  default     = ""
 }
-variable "s3_name" {
+variable "s3_bucket_name" {
   description = "Name of S3 bucket"
   type        = string
   default     = null
@@ -428,7 +428,7 @@ variable "create_s3_bucket" {
   type        = bool
   default     = true
 }
-variable "s3_tags" {
+variable "s3_bucket_tags" {
   description = "A mapping of tags to assign to S3 bucket"
   type        = map(string)
   default     = {}
@@ -589,7 +589,7 @@ variable "extra_egress" {
     description = "Allow all outbound traffic"
   }]
 }
-variable "sg_name" {
+variable "security_group_name" {
   description = "Name of default security group"
   type        = string
   default     = null
@@ -599,8 +599,8 @@ variable "sg_name" {
 ################################################################################
 variable "secret_policy" {
   description = "Secret policy"
-  type = string
-  default = ""  
+  type        = string
+  default     = ""
 }
 variable "manage_master_user_password" {
   description = "Set to true to allow RDS to manage the master user password in Secrets Manager"

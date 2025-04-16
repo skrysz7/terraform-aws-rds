@@ -283,11 +283,11 @@ No resources.
 | <a name="input_restore_to_point_in_time"></a> [restore\_to\_point\_in\_time](#input\_restore\_to\_point\_in\_time) | Restore to a point in time (MySQL is NOT supported) | `map(string)` | `null` | no |
 | <a name="input_create_s3_bucket"></a> [s3\_create](#input\_s3\_create) | Whether to create the S3 bucket for RDS | `bool` | `false` | no |
 | <a name="input_s3_import"></a> [s3\_import](#input\_s3\_import) | Restore from a Percona Xtrabackup in S3 (only MySQL is supported) | `map(string)` | `null` | no |
-| <a name="input_s3_name"></a> [s3\_name](#input\_s3\_name) | Name of S3 bucket | `string` | `null` | no |
-| <a name="input_s3_tags"></a> [s3\_tags](#input\_s3\_tags) | A mapping of tags to assign to S3 bucket | `map(string)` | `{}` | no |
+| <a name="input_s3_bucket_name"></a> [s3\_name](#input\_s3\_name) | Name of S3 bucket | `string` | `null` | no |
+| <a name="input_s3_bucket_tags"></a> [s3\_tags](#input\_s3\_tags) | A mapping of tags to assign to S3 bucket | `map(string)` | `{}` | no |
 | <a name="input_security_group_create"></a> [security\_group\_create](#input\_security\_group\_create) | Whether to create the Security Group for RDS | `bool` | `true` | no |
 | <a name="input_security_group_tags"></a> [security\_group\_tags](#input\_security\_group\_tags) | A mapping of tags to assign to S3 bucket | `map(string)` | `{}` | no |
-| <a name="input_sg_name"></a> [sg\_name](#input\_sg\_name) | Name of default security group | `string` | `null` | no |
+| <a name="input_security_group_name"></a> [sg\_name](#input\_sg\_name) | Name of default security group | `string` | `null` | no |
 | <a name="input_skip_final_snapshot"></a> [skip\_final\_snapshot](#input\_skip\_final\_snapshot) | Determines whether a final DB snapshot is created before the DB instance is deleted. If true is specified, no DBSnapshot is created. If false is specified, a DB snapshot is created before the DB instance is deleted | `bool` | `false` | no |
 | <a name="input_snapshot_identifier"></a> [snapshot\_identifier](#input\_snapshot\_identifier) | Specifies whether or not to create this database from a snapshot. This correlates to the snapshot ID you'd find in the RDS console, e.g: rds:production-2015-06-26-06-05 | `string` | `null` | no |
 | <a name="input_storage_encrypted"></a> [storage\_encrypted](#input\_storage\_encrypted) | Specifies whether the DB instance is encrypted | `bool` | `true` | no |

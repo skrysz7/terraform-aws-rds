@@ -527,7 +527,7 @@ variable "extra_egress" {
   }]
 }
 
-variable "sg_name" {
+variable "security_group_name" {
   description = "Name of default security group"
   type        = string
   default     = null
@@ -545,7 +545,7 @@ variable "object_lock_enabled" {
   type        = bool
   default     = null
 }
-variable "s3_name" {
+variable "s3_bucket_name" {
   description = "Name of S3 bucket"
   type        = string
   default     = null
@@ -555,7 +555,7 @@ variable "create_s3_bucket" {
   type        = bool
   default     = true
 }
-variable "s3_tags" {
+variable "s3_bucket_tags" {
   description = "A mapping of tags to assign to S3 bucket"
   type        = map(string)
   default     = {}

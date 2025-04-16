@@ -164,8 +164,8 @@ locals {
   ingress_rules = var.security_group_include_default_ingress ? concat(local.default_ingress, var.extra_ingress) : var.extra_ingress
   egress_rules  = var.extra_egress
 
-  sg_name = (var.sg_name != null && var.sg_name != "" ? var.sg_name : "fw-${local.identifier}")
-  s3_name = (var.s3_name != null && var.s3_name != "" ? var.s3_name : "s3-${local.identifier}")
+  security_group_name = (var.security_group_name != null && var.security_group_name != "" ? var.security_group_name : "fw-${local.identifier}")
+  s3_bucket_name      = (var.s3_bucket_name != null && var.s3_bucket_name != "" ? var.s3_bucket_name : "s3-${local.identifier}")
 
   option_group_engines = ["sqlserver-ee", "sqlserver-ex", "sqlserver-se", "sqlserver-web", "oracle-ee", "oracle-se", "oracle-se1", "oracle-se2", "mysql", "db2-se", "db2-ae"]
 

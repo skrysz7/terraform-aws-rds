@@ -95,12 +95,12 @@ module "db_instance" {
   parameter_group_description                            = var.parameter_group_description
   extra_ingress                                          = var.extra_ingress
   extra_egress                                           = var.extra_egress
-  sg_name                                                = var.sg_name
-  s3_name                                                = var.s3_name
+  security_group_name                                    = var.security_group_name
+  s3_bucket_name                                         = var.s3_bucket_name
   create_s3_bucket                                       = var.create_s3_bucket
-  s3_tags                                                = var.s3_tags
-  s3_bucket_policy      = var.s3_bucket_policy
-  secret_policy = var.secret_policy
+  s3_bucket_tags                                         = var.s3_bucket_tags
+  s3_bucket_policy                                       = var.s3_bucket_policy
+  secret_policy                                          = var.secret_policy
   object_lock_enabled                                    = var.object_lock_enabled
   parameter_group_create                                 = var.parameter_group_create
   option_group_create                                    = var.option_group_create
