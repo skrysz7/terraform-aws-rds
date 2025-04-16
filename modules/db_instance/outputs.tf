@@ -122,3 +122,18 @@ output "db_instance_secretsmanager_secret_rotation_enabled" {
   description = "Specifies whether automatic rotation is enabled for the secret"
   value       = try(aws_secretsmanager_secret_rotation.this.rotation_enabled, null)
 }
+output "kms_key_arn" {
+  description = "KMS key arn"
+  value       = try(module.db_kms_key[0].kms_key_arn)
+}
+output "bucket_name" {
+  value = try(module.db_s3_bucket[0].this.bucket)
+}
+output "db_option_group_arn" {
+  description = "The ARN of the db option group"
+  value       = try(module.db_option_group[0].this.arn)
+}
+output "db_parameter_group_arn" {
+  description = "The ARN of the db parameter group"
+  value       = try(module.db_parameter_group[0].this.arn)
+}

@@ -87,17 +87,9 @@ output "db_instance_master_user_secret_arn" {
   description = "The ARN of the master user secret (Only available when manage_master_user_password is set to true)"
   value       = module.db_instance.db_instance_master_user_secret_arn
 }
-output "db_parameter_group_id" {
-  description = "The db parameter group id"
-  value       = module.db_parameter_group.db_parameter_group_id
-}
 output "db_parameter_group_arn" {
   description = "The ARN of the db parameter group"
   value       = module.db_parameter_group.db_parameter_group_arn
-}
-output "db_option_group_id" {
-  description = "The db option group id"
-  value       = module.db_option_group.db_option_group_id
 }
 output "db_option_group_arn" {
   description = "The ARN of the db option group"
@@ -113,9 +105,9 @@ output "db_instance_secretsmanager_secret_rotation_enabled" {
 }
 output "kms_key_arn" {
   description = "KMS key arn"
-  value       = module.db_kms_key.kms_key_arn
+  value       = module.db_instance.kms_key_arn
 }
 output "bucket_name" {
   description = "S3 Bucket name"
-  value       = module.db_s3_bucket.bucket_name
+  value       = module.db_instance.bucket_name
 }
