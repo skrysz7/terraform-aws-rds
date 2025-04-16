@@ -28,10 +28,14 @@ module "db" {
 
   # Disable creation of S3 Bucket
   create_s3_bucket = false
+
 }
 ```
+## DB Instance
+The DB Instance is created with name db-engine_name-id-environment if id is provided or db-engine_name-app_alias-environment if app_alias is provided.
+The identifier can be overwritten by identifier variable.
 ## Option Group
-The default option group with name og-<rds instance name> and default options is created.
+The default option group with name og-rds_instance_name and default options is created.
 It's possible to overwrite the default options as well as add additional ones by using extra_options:
 ```
 extra_options = [
@@ -51,7 +55,7 @@ extra_options = [
   ]
 ```
 ## Parameter Group
-The default parameter group with name pg-<rds instance name> and default parameters is created.
+The default parameter group with name pg-rds_instance_name and default parameters is created.
 It's possible to overwrite the default parameters as well as add additional ones by using extra_parameters:
 ```
 extra_parameters = [
@@ -67,7 +71,7 @@ extra_parameters = [
   ]
 ```
 ## Security Group
-The default security group is created with ingress rule "Allow RDS traffic from inside VPC".
+The default security group is created with name fw-rds_instance_name and ingress rule "Allow RDS traffic from inside VPC".
 This can be disalbed if not necessary by setting security_group_include_default_ingress to false.
 To add additional rules to the default security group use the below:
 ```
@@ -123,16 +127,14 @@ The default policy can be overwritten by secret_policy variable.
 module "db" {
   source = "github.com/skrysz7/terraform-aws-rds.git"
   # version = "0.1"
-  environment            = "devl"
-  db_subnet_group_name   = aws_db_subnet_group.rds_db_subnet_group.name
-  vpc_security_group_ids = [aws_security_group.fw-rds-mssql-dba.id]
-  #id               = "23"
-  app_alias                       = "compan"
-  instance_class                  = "db.t3.micro"
-  engine                          = "sqlserver-ex"
-  engine_version                  = "15.00.4420.2.v1"
-  enabled_cloudwatch_logs_exports = ["error"]
-  deletion_protection             = false
+  environment                     = "devl"
+  db_subnet_group_name            = aws_db_subnet_group.rds_db_subnet_group.name
+  vpc_security_group_ids          = [aws_security_group.fw-rds-mssql-dba.id]
+  #id                             = "01"
+  app_alias                       = "test"
+  instance_class                  = "db.m5.large"
+  engine                          = "sqlserver-se"
+  engine_version                  = "16.00.4175.1.v1"
   allocated_storage               = "20"
   max_allocated_storage           = "30"
   skip_final_snapshot             = true
@@ -140,53 +142,12 @@ module "db" {
   master_user_secret_kms_key_id   = aws_kms_key.cmk-rds-secret.arn
   performance_insights_kms_key_id = aws_kms_key.cmk-rds-pi.arn
   backup_restore_role_arn         = aws_iam_role.rds_mssql_s3_backup_role.arn
+  leanixid                        = "1234567890"
+  finma_backup_enabled            = true
   extra_tags = {
     "xms:owner"              = "devteam"
     "xms:xxx:backup_enabled" = "false"
   }
-  option_group_create    = false
-  parameter_group_create = false
-  create_s3_bucket              = false
-  extra_options = [
-    {
-      option_name = "SQLSERVER_AUDIT"
-      option_settings = [
-        {
-          name  = "IAM_ROLE_ARN"
-          value = "arn:aws:iam::342023131128:role/rds-mssql-s3-backup-role"
-        },
-        {
-          name  = "S3_BUCKET_ARN"
-          value = "arn:aws:s3:::skrysz7-terraform-state-file"
-        }
-      ]
-    }
-  ]
-  extra_parameters = [
-    {
-      name  = "clr enabled"
-      value = "1"
-    },
-    {
-      name         = "remote access"
-      value        = "0"
-      apply_method = "pending-reboot"
-    },
-    # {
-    #   name         = "rds.force_ssl"
-    #   value        = "1"
-    #   apply_method = "pending-reboot"
-    # }
-  ]
-  extra_ingress = [
-    {
-      from_port   = 443
-      to_port     = 443
-      protocol    = "TCP"
-      cidr_blocks = ["10.0.0.0/24"]
-      description = "Test adding extra ingress"
-    }
-  ]
 }
 ```
 
