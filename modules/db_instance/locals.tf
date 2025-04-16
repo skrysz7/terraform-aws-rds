@@ -1,8 +1,4 @@
 locals {
-  environment = var.environment
-  app_alias   = var.app_alias
-  id          = var.id
-
   engine_mapping = {
     "sqlserver-ee"  = "mssql"
     "sqlserver-ex"  = "mssql"
