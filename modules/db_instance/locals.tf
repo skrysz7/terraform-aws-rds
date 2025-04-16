@@ -132,11 +132,11 @@ locals {
   }
 
   tags = {
-    "glo:m:any:stage"              = var.environment
+    "glo:m:any:stage"                 = var.environment
     "glo:m:any:leanix-application-id" = var.leanixid
-    "xms:xxx:backup_policy"        = lookup(local.backup_policy_mapping, var.environment, null)
-    "xms:xxx:backup_enabled"       = local.backup_retention_period > 0 ? "true" : "false"
-    "xms:xxx:finma:backup:enabled" = var.finma_backup_enabled
+    "xms:xxx:backup_policy"           = lookup(local.backup_policy_mapping, var.environment, null)
+    "xms:xxx:backup_enabled"          = local.backup_retention_period > 0 ? "true" : "false"
+    "xms:xxx:finma:backup:enabled"    = var.finma_backup_enabled
   }
 
   db_port_mapping = {
@@ -161,11 +161,41 @@ locals {
     cidr_blocks = [data.aws_vpc.this.cidr_block]
     description = "Allow RDS traffic from inside VPC"
   }]
-  ingress_rules = concat(local.default_ingress, var.extra_ingress)
+  ingress_rules = var.security_group_include_default_ingress ? concat(local.default_ingress, var.extra_ingress) : var.extra_ingress
   egress_rules  = var.extra_egress
 
   sg_name = (var.sg_name != null && var.sg_name != "" ? var.sg_name : "fw-${local.identifier}")
   s3_name = (var.s3_name != null && var.s3_name != "" ? var.s3_name : "s3-${local.identifier}")
 
   option_group_engines = ["sqlserver-ee", "sqlserver-ex", "sqlserver-se", "sqlserver-web", "oracle-ee", "oracle-se", "oracle-se1", "oracle-se2", "mysql", "db2-se", "db2-ae"]
+
+  default_secret_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Sid    = "AllowuseoftheSecretforaccount",
+        Effect = "Allow",
+        Principal = {
+          AWS = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
+        },
+        Action = [
+          "secretsmanager:GetSecretValue",
+          "secretsmanager:DescribeSecret"
+        ],
+        Resource = data.aws_secretsmanager_secret.this.arn
+      },
+      {
+        Sid    = "AllowAccessForExternalAccount",
+        Effect = "Allow",
+        Principal = {
+          AWS = "arn:aws:iam::342023131128:root" # set it to ms-sql account
+        },
+        Action = [
+          "secretsmanager:GetSecretValue",
+          "secretsmanager:DescribeSecret"
+        ],
+        Resource = data.aws_secretsmanager_secret.this.arn
+      }
+    ]
+  })
 }

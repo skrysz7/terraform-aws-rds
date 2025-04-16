@@ -68,10 +68,6 @@ module "db_instance" {
   monitoring_interval                                    = var.monitoring_interval
   monitoring_role_arn                                    = var.monitoring_role_arn
   monitoring_role_name                                   = var.monitoring_role_name
-  monitoring_role_use_name_prefix                        = var.monitoring_role_use_name_prefix
-  monitoring_role_description                            = var.monitoring_role_description
-  create_monitoring_role                                 = var.create_monitoring_role
-  monitoring_role_permissions_boundary                   = var.monitoring_role_permissions_boundary
   character_set_name                                     = var.character_set_name
   nchar_character_set_name                               = var.nchar_character_set_name
   timezone                                               = var.timezone
@@ -101,12 +97,15 @@ module "db_instance" {
   extra_egress                                           = var.extra_egress
   sg_name                                                = var.sg_name
   s3_name                                                = var.s3_name
-  s3_create                                              = var.s3_create
+  create_s3_bucket                                       = var.create_s3_bucket
   s3_tags                                                = var.s3_tags
+  s3_bucket_policy      = var.s3_bucket_policy
+  secret_policy = var.secret_policy
   object_lock_enabled                                    = var.object_lock_enabled
   parameter_group_create                                 = var.parameter_group_create
   option_group_create                                    = var.option_group_create
-  kms_key_create                                         = var.kms_key_create
+  create_kms_key                                         = var.create_kms_key
   security_group_create                                  = var.security_group_create
   security_group_tags                                    = var.security_group_tags
+  security_group_include_default_ingress                 = var.security_group_include_default_ingress
 }

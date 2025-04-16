@@ -4,7 +4,7 @@ resource "aws_kms_key" "this" {
   rotation_period_in_days = var.rotation_period_in_days
   deletion_window_in_days = var.deletion_window_in_days
   is_enabled              = var.is_enabled
-  policy = var.policy != null ? var.policy : jsonencode({
+  policy = var.kms_policy != null ? var.kms_policy : jsonencode({
     Version = "2012-10-17"
     Statement = [
       {

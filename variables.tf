@@ -255,7 +255,10 @@ variable "multi_az" {
   type        = bool
   default     = false
 }
-
+variable "db_subnet_group_name" {
+  description = "Name of DB subnet group. DB instance will be created in the VPC associated with the DB subnet group. If unspecified, will be created in the default VPC"
+  type        = string
+}
 variable "iops" {
   description = "The amount of provisioned IOPS. Setting this implies a storage_type of 'io1' or `gp3`. See `notes` for limitations regarding this variable for `gp3`"
   type        = number
@@ -273,43 +276,16 @@ variable "monitoring_interval" {
   type        = number
   default     = 60
 }
-
-variable "monitoring_role_arn" {
-  description = "The ARN for the IAM role that permits RDS to send enhanced monitoring metrics to CloudWatch Logs. Must be specified if monitoring_interval is non-zero"
-  type        = string
-  default     = null
-}
-
 variable "monitoring_role_name" {
   description = "Name of the IAM role which will be created when create_monitoring_role is enabled"
   type        = string
   default     = "rds-monitoring-role"
 }
-
-variable "monitoring_role_use_name_prefix" {
-  description = "Determines whether to use `monitoring_role_name` as is or create a unique identifier beginning with `monitoring_role_name` as the specified prefix"
-  type        = bool
-  default     = false
-}
-
-variable "monitoring_role_description" {
-  description = "Description of the monitoring IAM role"
+variable "monitoring_role_arn" {
+  description = "The ARN for the IAM role that permits RDS to send enhanced monitoring metrics to CloudWatch Logs. Must be specified if monitoring_interval is non-zero."
   type        = string
   default     = null
 }
-
-variable "create_monitoring_role" {
-  description = "Create IAM role with a defined name that permits RDS to send enhanced monitoring metrics to CloudWatch Logs"
-  type        = bool
-  default     = false
-}
-
-variable "monitoring_role_permissions_boundary" {
-  description = "ARN of the policy that is used to set the permissions boundary for the monitoring IAM role"
-  type        = string
-  default     = null
-}
-
 variable "allow_major_version_upgrade" {
   description = "Indicates that major version upgrades are allowed. Changing this parameter does not result in an outage and the change is asynchronously applied as soon as possible"
   type        = bool
@@ -321,7 +297,6 @@ variable "auto_minor_version_upgrade" {
   type        = bool
   default     = true
 }
-
 variable "apply_immediately" {
   description = "Specifies whether any database modifications are applied immediately, or during the next maintenance window"
   type        = bool
@@ -397,44 +372,6 @@ variable "db_parameter_group_tags" {
   type        = map(string)
   default     = {}
 }
-
-variable "db_subnet_group_tags" {
-  description = "Additional tags for the DB subnet group"
-  type        = map(string)
-  default     = {}
-}
-
-# DB subnet group
-variable "create_db_subnet_group" {
-  description = "Whether to create a database subnet group"
-  type        = bool
-  default     = false
-}
-
-variable "db_subnet_group_name" {
-  description = "Name of DB subnet group. DB instance will be created in the VPC associated with the DB subnet group. If unspecified, will be created in the default VPC"
-  type        = string
-}
-
-variable "db_subnet_group_use_name_prefix" {
-  description = "Determines whether to use `subnet_group_name` as is or create a unique name beginning with the `subnet_group_name` as the prefix"
-  type        = bool
-  default     = true
-}
-
-variable "db_subnet_group_description" {
-  description = "Description of the DB subnet group to create"
-  type        = string
-  default     = null
-}
-
-variable "subnet_ids" {
-  description = "A list of VPC subnet IDs"
-  type        = list(string)
-  default     = []
-}
-
-# DB parameter group
 variable "create_db_parameter_group" {
   description = "Whether to create a database parameter group"
   type        = bool
@@ -756,7 +693,7 @@ variable "s3_name" {
   type        = string
   default     = null
 }
-variable "s3_create" {
+variable "create_s3_bucket" {
   description = "Whether to create the S3 bucket for RDS"
   type        = bool
   default     = true
@@ -781,7 +718,7 @@ variable "parameter_group_create" {
   type        = bool
   default     = true
 }
-variable "kms_key_create" {
+variable "create_kms_key" {
   description = "Whether to create the KMS key for RDS"
   type        = bool
   default     = true
@@ -799,4 +736,19 @@ variable "security_group_tags" {
 variable "leanixid" {
   type = string
   description = "ID value from LeanIX (36 characters)"
+}
+variable "security_group_include_default_ingress" {
+  description = "Whether to include default ingress rule in Security Group"
+  type        = bool
+  default     = true
+}
+variable "s3_bucket_policy" {
+  description = "S3 Bucket policy"
+  type = string
+  default = ""  
+}
+variable "secret_policy" {
+  description = "Secret policy"
+  type = string
+  default = ""  
 }

@@ -18,7 +18,7 @@ variable "environment" {
   }
 }
 variable "leanixid" {
-  type = string
+  type        = string
   description = "ID value from LeanIX (36 characters)"
 }
 variable "engine" {
@@ -636,7 +636,7 @@ variable "s3_name" {
   type        = string
   default     = null
 }
-variable "s3_create" {
+variable "create_s3_bucket" {
   description = "Whether to create the S3 bucket for RDS"
   type        = bool
   default     = true
@@ -656,7 +656,7 @@ variable "object_lock_enabled" {
   type        = bool
   default     = null
 }
-variable "kms_key_create" {
+variable "create_kms_key" {
   description = "Whether to create the KMS key for RDS"
   type        = bool
   default     = true
@@ -665,4 +665,19 @@ variable "security_group_create" {
   description = "Whether to create the Security Group for RDS"
   type        = bool
   default     = true
+}
+variable "security_group_include_default_ingress" {
+  description = "Whether to include default ingress rule in Security Group"
+  type        = bool
+  default     = true
+}
+variable "s3_bucket_policy" {
+  description = "S3 Bucket policy"
+  type        = string
+  default     = ""
+}
+variable "secret_policy" {
+  description = "Secret policy"
+  type        = string
+  default     = ""
 }

@@ -8,9 +8,119 @@ Root module calls these modules:
 - db_option_group - creates RDS DB option group
 - db_s3_bucket - creates S3 Bucket for RDS backups
 
+## Conditional creation
+The following values are provided to toggle on/off creation of the associated resources as desired. Default value is true:
+```
+module "db" {
+  source = "terraform-aws-modules/rds/aws"
+
+  # Disable creation of KMS key
+  create_kms_key = false
+
+  # Disable creation of option group
+  create_db_option_group = false
+
+  # Disable creation of parameter group
+  create_db_parameter_group = false
+
+  # Disable creation of cloudwatch log group
+  create_cloudwatch_log_group = false
+
+  # Disable creation of S3 Bucket
+  create_s3_bucket = false
+}
+```
+## Option Group
+The default option group with name og-<rds instance name> and default options is created.
+It's possible to overwrite the default options as well as add additional ones by using extra_options:
+```
+extra_options = [
+    {
+      option_name = "SQLSERVER_AUDIT"
+      option_settings = [
+        {
+          name  = "IAM_ROLE_ARN"
+          value = "arn:aws:iam::342023131128:role/rds-mssql-s3-backup-role"
+        },
+        {
+          name  = "S3_BUCKET_ARN"
+          value = "arn:aws:s3:::bucket"
+        }
+      ]
+    }
+  ]
+```
+## Parameter Group
+The default parameter group with name pg-<rds instance name> and default parameters is created.
+It's possible to overwrite the default parameters as well as add additional ones by using extra_parameters:
+```
+extra_parameters = [
+    {
+      name  = "clr enabled"
+      value = "1"
+    },
+    {
+      name         = "remote access"
+      value        = "0"
+      apply_method = "pending-reboot"
+    }
+  ]
+```
+## Security Group
+The default security group is created with ingress rule "Allow RDS traffic from inside VPC".
+This can be disalbed if not necessary by setting security_group_include_default_ingress to false.
+To add additional rules to the default security group use the below:
+```
+extra_ingress = [
+    {
+      from_port   = 443
+      to_port     = 443
+      protocol    = "TCP"
+      cidr_blocks = ["10.0.0.0/24"]
+      description = "Adding extra ingress"
+    },
+    {
+      from_port   = 1433
+      to_port     = 1433
+      protocol    = "TCP"
+      cidr_blocks = ["192.168.0.0/24"]
+      description = "Adding ingress"
+    }
+  ]
+  extra_egress = [
+    {
+      from_port   = 443
+      to_port     = 443
+      protocol    = "TCP"
+      cidr_blocks = ["10.0.0.0/24"]
+      description = "Adding extra egress"
+    },
+    {
+      from_port   = 1433
+      to_port     = 1433
+      protocol    = "TCP"
+      cidr_blocks = ["192.168.0.0/24"]
+      description = "Adding egress"
+    }
+  ]
+```
+## KMS key
+The default Customer Managed Key for RDS storage is created with name cmk-<rds instance name> and default policy which:
+- Enable IAM User Permissions for the account
+- Allow access through RDS for all authorized RDS principals in the account
+The policy can be overwritten by kms_policy variable.
+## S3 Bucket
+The default S3 Bucket is created with name s3-<rds instance name> as well as default policy which can be overwritten by s3_bucket_policy variable.
+The purpose is to store and protect data for use cases like database backup and restore, audit files etc.
+## CloudWatch Log Group
+The default CloudWatch Log Group is created with default log exports for specific engines.
+The log exports can be overwritten by enabled_cloudwatch_logs_exports variable.
+## Secret
+The default Secret is created as Managed in AWS Secrets Manager. RDS secret password length is 28 characters.
+The default policy can be overwritten by secret_policy variable.
 ## Example of caller code
 ```
-module "test_rds_mssql" {
+module "db" {
   source = "github.com/skrysz7/terraform-aws-rds.git"
   # version = "0.1"
   environment            = "devl"
@@ -36,7 +146,7 @@ module "test_rds_mssql" {
   }
   option_group_create    = false
   parameter_group_create = false
-  s3_create              = false
+  create_s3_bucket              = false
   extra_options = [
     {
       option_name = "SQLSERVER_AUDIT"
@@ -162,7 +272,7 @@ No resources.
 | <a name="input_instance_class"></a> [instance\_class](#input\_instance\_class) | The instance type of the RDS instance | `string` | `null` | no |
 | <a name="input_iops"></a> [iops](#input\_iops) | The amount of provisioned IOPS. Setting this implies a storage\_type of 'io1' or `gp3`. See `notes` for limitations regarding this variable for `gp3` | `number` | `null` | no |
 | <a name="input_kms_alias_name"></a> [kms\_alias\_name](#input\_kms\_alias\_name) | Custom KMS alias name | `string` | `null` | no |
-| <a name="input_kms_key_create"></a> [kms\_key\_create](#input\_kms\_key\_create) | Whether to create the KMS key for RDS | `bool` | `false` | no |
+| <a name="input_create_kms_key"></a> [kms\_key\_create](#input\_kms\_key\_create) | Whether to create the KMS key for RDS | `bool` | `false` | no |
 | <a name="input_kms_key_id"></a> [kms\_key\_id](#input\_kms\_key\_id) | The ARN for the KMS encryption key. If creating an encrypted replica, set this to the destination KMS ARN. If storage\_encrypted is set to true and kms\_key\_id is not specified the default KMS key created in your account will be used. Be sure to use the full ARN, not a key alias. | `string` | `null` | no |
 | <a name="input_kms_policy"></a> [kms\_policy](#input\_kms\_policy) | Custom KMS policy JSON document | `string` | `null` | no |
 | <a name="input_leanixid"></a> [leanixid](#input\_leanixid) | ID value from LeanIX (36 characters) | `string` | n/a | yes |
@@ -210,7 +320,7 @@ No resources.
 | <a name="input_replica_mode"></a> [replica\_mode](#input\_replica\_mode) | Specifies whether the replica is in either mounted or open-read-only mode. This attribute is only supported by Oracle instances. Oracle replicas operate in open-read-only mode unless otherwise specified | `string` | `null` | no |
 | <a name="input_replicate_source_db"></a> [replicate\_source\_db](#input\_replicate\_source\_db) | Specifies that this resource is a Replicate database, and to use this value as the source database. This correlates to the identifier of another Amazon RDS Database to replicate | `string` | `null` | no |
 | <a name="input_restore_to_point_in_time"></a> [restore\_to\_point\_in\_time](#input\_restore\_to\_point\_in\_time) | Restore to a point in time (MySQL is NOT supported) | `map(string)` | `null` | no |
-| <a name="input_s3_create"></a> [s3\_create](#input\_s3\_create) | Whether to create the S3 bucket for RDS | `bool` | `false` | no |
+| <a name="input_create_s3_bucket"></a> [s3\_create](#input\_s3\_create) | Whether to create the S3 bucket for RDS | `bool` | `false` | no |
 | <a name="input_s3_import"></a> [s3\_import](#input\_s3\_import) | Restore from a Percona Xtrabackup in S3 (only MySQL is supported) | `map(string)` | `null` | no |
 | <a name="input_s3_name"></a> [s3\_name](#input\_s3\_name) | Name of S3 bucket | `string` | `null` | no |
 | <a name="input_s3_tags"></a> [s3\_tags](#input\_s3\_tags) | A mapping of tags to assign to S3 bucket | `map(string)` | `{}` | no |

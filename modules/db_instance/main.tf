@@ -1,8 +1,8 @@
 module "db_kms_key" {
   source     = "../db_kms_key"
-  count      = var.kms_key_create ? 1 : 0
+  count      = var.create_kms_key ? 1 : 0
   identifier = local.identifier
-  policy     = var.kms_policy
+  kms_policy = var.kms_policy
   name       = var.kms_alias_name
 }
 
@@ -33,11 +33,12 @@ module "db_parameter_group" {
 }
 
 module "db_s3_bucket" {
-  count               = var.s3_create ? 1 : 0
+  count               = var.create_s3_bucket ? 1 : 0
   source              = "../db_s3_bucket"
   s3_name             = local.s3_name
   s3_tags             = var.s3_tags
   object_lock_enabled = var.object_lock_enabled
+  s3_bucket_policy    = var.s3_bucket_policy
 }
 resource "aws_db_instance" "this" {
   identifier                          = local.identifier
@@ -135,9 +136,6 @@ resource "aws_db_instance" "this" {
   }
 
   tags = merge(local.tags, var.extra_tags)
-  # {
-  #  "xxx:service:name" = var.application_name 
-  # })
 
   depends_on = [aws_cloudwatch_log_group.this]
 
@@ -183,36 +181,7 @@ data "aws_secretsmanager_secret" "this" {
 
 resource "aws_secretsmanager_secret_policy" "this" {
   secret_arn = data.aws_secretsmanager_secret.this.arn
-
-  policy = jsonencode({
-    Version = "2012-10-17",
-    Statement = [
-      {
-        Sid    = "AllowuseoftheSecretforaccount",
-        Effect = "Allow",
-        Principal = {
-          AWS = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
-        },
-        Action = [
-          "secretsmanager:GetSecretValue",
-          "secretsmanager:DescribeSecret"
-        ],
-        Resource = data.aws_secretsmanager_secret.this.arn
-      },
-      {
-        Sid    = "AllowAccessForExternalAccount",
-        Effect = "Allow",
-        Principal = {
-          AWS = "arn:aws:iam::342023131128:root" # set it to ms-sql account
-        },
-        Action = [
-          "secretsmanager:GetSecretValue",
-          "secretsmanager:DescribeSecret"
-        ],
-        Resource = data.aws_secretsmanager_secret.this.arn
-      }
-    ]
-  })
+  policy     = var.secret_policy != "" ? var.secret_policy : local.default_secret_policy
 }
 ################################################################################
 # Security Group

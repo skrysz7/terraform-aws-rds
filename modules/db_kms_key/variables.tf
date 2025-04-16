@@ -18,8 +18,8 @@ variable "deletion_window_in_days" {
   type        = number
   default     = 7
 }
-variable "policy" {
-  description = "A valid policy JSON document"
+variable "kms_policy" {
+  description = "A valid policy JSON document for KMS"
   type        = string
   default     = null
 }

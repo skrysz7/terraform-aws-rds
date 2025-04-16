@@ -9,7 +9,12 @@ variable "s3_tags" {
   default     = {}
 }
 variable "object_lock_enabled" {
-  description = "ndicates whether this bucket has an Object Lock configuration enabled"
+  description = "Indicates whether this bucket has an Object Lock configuration enabled"
   type        = bool
   default     = null
+}
+variable "s3_bucket_policy" {
+  description = "S3 Bucket policy"
+  type = string
+  default = ""  
 }
