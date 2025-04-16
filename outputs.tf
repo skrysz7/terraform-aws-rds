@@ -89,11 +89,11 @@ output "db_instance_master_user_secret_arn" {
 }
 output "db_parameter_group_arn" {
   description = "The ARN of the db parameter group"
-  value       = module.db_parameter_group.db_parameter_group_arn
+  value       = module.db_instance.db_parameter_group_arn
 }
 output "db_option_group_arn" {
   description = "The ARN of the db option group"
-  value       = module.db_option_group.db_option_group_arn
+  value       = module.db_instance.db_option_group_arn
 }
 output "db_instance_cloudwatch_log_groups" {
   description = "Map of CloudWatch log groups created and their attributes"
