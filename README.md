@@ -9,7 +9,7 @@ Root module calls these modules:
 - db_s3_bucket - creates S3 Bucket for RDS backups
 
 ## Conditional creation
-The following values are provided to toggle on/off creation of the associated resources as desired. Default value is true:
+The following values are provided to toggle on/off creation of the associated resources as desired. Default value is ```true```:
 ```
 module "db" {
   source = "terraform-aws-modules/rds/aws"
@@ -32,8 +32,9 @@ module "db" {
 }
 ```
 ## DB Instance
-The DB Instance is created with name ```db-engine_name-id-environment``` if ```id``` is provided or ```db-engine_name-app_alias-environment``` if ```app_alias``` is provided.
-The identifier can be overwritten by identifier variable.
+The DB Instance is created with name ```db-engine_name-id-environment``` if ```id``` is provided or ```db-engine_name-app_alias-environment``` if ```app_alias``` is provided. Only one argument
+can be provided. 
+The identifier can be overwritten by ```identifier``` variable.
 ## Option Group
 The default option group with name ```og-rds_instance_name``` and default options is created.
 It's possible to overwrite the default options as well as add additional ones by using ```extra_options```:
@@ -112,6 +113,7 @@ extra_ingress = [
 The default Customer Managed Key for RDS storage is created with name ```cmk-rds_instance_name``` and default policy which:
 - Enable IAM User Permissions for the account
 - Allow access through RDS for all authorized RDS principals in the account
+
 The policy can be overwritten by ```kms_policy``` variable.
 ## S3 Bucket
 The default S3 Bucket is created with name ```s3-rds_instance_name``` as well as default policy which can be overwritten by ```s3_bucket_policy``` variable.
