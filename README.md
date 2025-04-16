@@ -32,7 +32,7 @@ module "db" {
 }
 ```
 ## DB Instance
-The DB Instance is created with name db-engine_name-id-environment if id is provided or db-engine_name-app_alias-environment if app_alias is provided.
+The DB Instance is created with name ```db-engine_name-id-environment``` if id is provided or db-engine_name-app_alias-environment if app_alias is provided.
 The identifier can be overwritten by identifier variable.
 ## Option Group
 The default option group with name og-rds_instance_name and default options is created.
