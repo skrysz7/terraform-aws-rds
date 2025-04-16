@@ -127,13 +127,14 @@ output "kms_key_arn" {
   value       = try(module.db_kms_key[0].kms_key_arn)
 }
 output "bucket_name" {
-  value = try(module.db_s3_bucket[0].this.bucket)
+  value = try(module.db_s3_bucket[0].bucket_name)
 }
+
 output "db_option_group_arn" {
   description = "The ARN of the db option group"
-  value       = try(module.db_option_group[0].this.arn)
+  value       = try(module.db_option_group[0].db_option_group_arn)
 }
 output "db_parameter_group_arn" {
   description = "The ARN of the db parameter group"
-  value       = try(module.db_parameter_group[0].this.arn)
+  value       = try(module.db_parameter_group[0].db_parameter_group_arn)
 }
