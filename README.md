@@ -32,11 +32,11 @@ module "db" {
 }
 ```
 ## DB Instance
-The DB Instance is created with name ```db-engine_name-id-environment``` if id is provided or db-engine_name-app_alias-environment if app_alias is provided.
+The DB Instance is created with name ```db-engine_name-id-environment``` if ```id``` is provided or ```db-engine_name-app_alias-environment``` if ```app_alias``` is provided.
 The identifier can be overwritten by identifier variable.
 ## Option Group
-The default option group with name og-rds_instance_name and default options is created.
-It's possible to overwrite the default options as well as add additional ones by using extra_options:
+The default option group with name ```og-rds_instance_name``` and default options is created.
+It's possible to overwrite the default options as well as add additional ones by using ```extra_options```:
 ```
 extra_options = [
     {
@@ -55,8 +55,8 @@ extra_options = [
   ]
 ```
 ## Parameter Group
-The default parameter group with name pg-rds_instance_name and default parameters is created.
-It's possible to overwrite the default parameters as well as add additional ones by using extra_parameters:
+The default parameter group with name ```pg-rds_instance_name``` and default parameters is created.
+It's possible to overwrite the default parameters as well as add additional ones by using ```extra_parameters```:
 ```
 extra_parameters = [
     {
@@ -71,8 +71,8 @@ extra_parameters = [
   ]
 ```
 ## Security Group
-The default security group is created with name fw-rds_instance_name and ingress rule "Allow RDS traffic from inside VPC".
-This can be disalbed if not necessary by setting security_group_include_default_ingress to false.
+The default security group is created with name ```fw-rds_instance_name``` and ingress rule "Allow RDS traffic from inside VPC".
+This can be disalbed if not necessary by setting ```security_group_include_default_ingress``` to ```false```.
 To add additional rules to the default security group use the below:
 ```
 extra_ingress = [
@@ -109,19 +109,19 @@ extra_ingress = [
   ]
 ```
 ## KMS key
-The default Customer Managed Key for RDS storage is created with name cmk-<rds instance name> and default policy which:
+The default Customer Managed Key for RDS storage is created with name ```cmk-rds_instance_name``` and default policy which:
 - Enable IAM User Permissions for the account
 - Allow access through RDS for all authorized RDS principals in the account
-The policy can be overwritten by kms_policy variable.
+The policy can be overwritten by ```kms_policy``` variable.
 ## S3 Bucket
-The default S3 Bucket is created with name s3-<rds instance name> as well as default policy which can be overwritten by s3_bucket_policy variable.
+The default S3 Bucket is created with name ```s3-rds_instance_name``` as well as default policy which can be overwritten by ```s3_bucket_policy``` variable.
 The purpose is to store and protect data for use cases like database backup and restore, audit files etc.
 ## CloudWatch Log Group
-The default CloudWatch Log Group is created with default log exports for specific engines.
-The log exports can be overwritten by enabled_cloudwatch_logs_exports variable.
+The default CloudWatch Log Group is created with name ```/aws/rds/instance/db-rds_instance_name/log_export``` and default log exports for specific engines.
+The log exports can be overwritten by ```enabled_cloudwatch_logs_exports``` variable.
 ## Secret
 The default Secret is created as Managed in AWS Secrets Manager. RDS secret password length is 28 characters.
-The default policy can be overwritten by secret_policy variable.
+The default policy can be overwritten by ```secret_policy``` variable.
 ## Example of caller code
 ```
 module "db" {
