@@ -67,8 +67,8 @@ resource "aws_db_instance" "this" {
   master_user_secret_kms_key_id       = var.master_user_secret_kms_key_id
   vpc_security_group_ids              = compact(concat(var.vpc_security_group_ids, var.security_group_create ? [aws_security_group.this[0].id] : []))
   db_subnet_group_name                = var.db_subnet_group_name
-  parameter_group_name                = var.parameter_group_name
-  option_group_name                   = var.option_group_name
+  parameter_group_name                = var.parameter_group_name != null && var.parameter_group_name != "" ? var.parameter_group_name : module.db_parameter_group[0].name
+  option_group_name                   = var.option_group_name != null && var.option_group_name != "" ? var.option_group_name : module.db_option_group[0].name
   network_type                        = var.network_type
   availability_zone                   = var.availability_zone
   multi_az                            = var.multi_az
