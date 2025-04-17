@@ -150,7 +150,7 @@ resource "aws_db_instance" "this" {
 # CloudWatch Log Group
 ################################################################################
 resource "aws_cloudwatch_log_group" "this" {
-  for_each = toset([for log in var.enabled_cloudwatch_logs_exports : log if var.create_cloudwatch_log_group])
+  for_each = toset([for log in local.enabled_cloudwatch_logs_exports : log if var.create_cloudwatch_log_group])
 
   name              = "/aws/rds/instance/${local.identifier}/${each.key}"
   retention_in_days = local.cloud_watch_log_retention
