@@ -78,12 +78,10 @@ variable "domain_ou" {
 variable "engine" {
   description = "The database engine to use for the DB instance"
   type        = string
-  default     = null
 }
 variable "engine_version" {
   description = "The engine version to use"
   type        = string
-  default     = null
 }
 variable "engine_lifecycle_support" {
   description = "The life cycle type for this DB instance. This setting applies only to RDS for MySQL and RDS for PostgreSQL. Valid values are `open-source-rds-extended-support`, `open-source-rds-extended-support-disabled`. Default value is `open-source-rds-extended-support`."
@@ -113,7 +111,6 @@ variable "final_snapshot_identifier" {
 variable "instance_class" {
   description = "The instance type of the RDS instance"
   type        = string
-  default     = null
 }
 variable "db_name" {
   description = "The DB name to create. If omitted, no database is created initially"
@@ -142,7 +139,6 @@ variable "port" {
 variable "vpc_security_group_ids" {
   description = "List of VPC security groups to associate"
   type        = list(string)
-  default     = []
 }
 variable "availability_zone" {
   description = "The Availability Zone of the RDS instance"
@@ -337,7 +333,6 @@ variable "finma_backup_enabled" {
 variable "allocated_storage" {
   description = "The allocated storage in gigabytes"
   type        = number
-  default     = null
 }
 variable "iops" {
   description = "The amount of provisioned IOPS. Setting this implies a storage_type of 'io1' or `gp3`. See `notes` for limitations regarding this variable for `gp3`"
@@ -408,7 +403,6 @@ variable "performance_insights_retention_period" {
 variable "performance_insights_kms_key_id" {
   description = "The ARN for the KMS key to encrypt Performance Insights data"
   type        = string
-  default     = null
 }
 ################################################################################
 # S3 Bucket

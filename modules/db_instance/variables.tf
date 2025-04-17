@@ -88,7 +88,6 @@ variable "domain_ou" {
 variable "engine_version" {
   description = "The engine version to use"
   type        = string
-  default     = null
 }
 variable "engine_lifecycle_support" {
   description = "The life cycle type for this DB instance. This setting applies only to RDS for MySQL and RDS for PostgreSQL. Valid values are `open-source-rds-extended-support`, `open-source-rds-extended-support-disabled`. Default value is `open-source-rds-extended-support`."
@@ -98,7 +97,6 @@ variable "engine_lifecycle_support" {
 variable "instance_class" {
   description = "The instance type of the RDS instance"
   type        = string
-  default     = null
 }
 variable "db_name" {
   description = "The DB name to create. If omitted, no database is created initially"
@@ -143,7 +141,6 @@ variable "final_snapshot_identifier" {
 variable "vpc_security_group_ids" {
   description = "List of VPC security groups to associate"
   type        = list(string)
-  default     = []
 }
 variable "db_subnet_group_name" {
   description = "Name of DB subnet group. DB instance will be created in the VPC associated with the DB subnet group. If unspecified, will be created in the default VPC"
@@ -265,7 +262,6 @@ variable "iops" {
 variable "allocated_storage" {
   description = "The allocated storage in gigabytes"
   type        = number
-  default     = null
 }
 variable "storage_type" {
   description = "One of 'standard' (magnetic), 'gp2' (general purpose SSD), 'gp3' (new generation of general purpose SSD), or 'io1' (provisioned IOPS SSD). The default is 'io1' if iops is specified, 'gp2' if not. If you specify 'io1' or 'gp3' , you must also include a value for the 'iops' parameter"
@@ -300,7 +296,6 @@ variable "performance_insights_retention_period" {
 variable "performance_insights_kms_key_id" {
   description = "The ARN for the KMS key to encrypt Performance Insights data."
   type        = string
-  default     = null
 }
 ################################################################################
 # Monitoring
