@@ -150,14 +150,14 @@ locals {
   port = (
     var.port != null && var.port != "" ? var.port : lookup(local.db_port_mapping, var.engine)
   )
-  default_ingress = [{
-    from_port   = local.port
-    to_port     = local.port
-    protocol    = "tcp"
-    cidr_blocks = [data.aws_vpc.this.cidr_block]
-    description = "Allow RDS traffic from inside VPC"
-  }]
-  ingress_rules = var.security_group_include_default_ingress ? concat(local.default_ingress, var.extra_ingress) : var.extra_ingress
+  # default_ingress = [{
+  #   from_port   = local.port
+  #   to_port     = local.port
+  #   protocol    = "tcp"
+  #   cidr_blocks = [data.aws_vpc.this.cidr_block]
+  #   description = "Allow RDS traffic from inside VPC"
+  # }]
+  
   egress_rules  = var.extra_egress
 
   security_group_name = (var.security_group_name != null && var.security_group_name != "" ? var.security_group_name : "fw-${local.identifier}")
@@ -194,4 +194,82 @@ locals {
       }
     ]
   })
+# Domyślne reguły MSSQL
+  mssql_ingress_rules = [
+    {
+      from_port   = 1433
+      to_port     = 1433
+      protocol    = "tcp"
+      cidr_blocks = ["10.0.0.0/8"]
+      description = "Private network class A to MSSQL access"
+    },
+    {
+      from_port   = 1433
+      to_port     = 1433
+      protocol    = "tcp"
+      cidr_blocks = ["172.16.0.0/12"]
+      description = "Private network class B to MSSQL access"
+    },
+    {
+      from_port   = 1433
+      to_port     = 1433
+      protocol    = "tcp"
+      cidr_blocks = ["192.168.0.0/16"]
+      description = "Private network class C to MSSQL access"
+    }
+  ]
+
+  # Reguły Oracle
+  oracle_ingress_rules = [
+    {
+      from_port   = 1521
+      to_port     = 1521
+      protocol    = "tcp"
+      cidr_blocks = ["10.0.0.0/8"]
+      description = "Private network class A to Oracle access"
+    },
+    {
+      from_port   = 1521
+      to_port     = 1521
+      protocol    = "tcp"
+      cidr_blocks = ["172.16.0.0/12"]
+      description = "Private network class B to Oracle access"
+    },
+    {
+      from_port   = 1521
+      to_port     = 1521
+      protocol    = "tcp"
+      cidr_blocks = ["192.168.0.0/16"]
+      description = "Private network class C to Oracle access"
+    },
+    {
+      from_port   = 1522
+      to_port     = 1522
+      protocol    = "tcp"
+      cidr_blocks = ["10.0.0.0/8"]
+      description = "Private network class A to Oracle TCPS access"
+    },
+    {
+      from_port   = 1522
+      to_port     = 1522
+      protocol    = "tcp"
+      cidr_blocks = ["172.16.0.0/12"]
+      description = "Private network class B to Oracle TCPS access"
+    },
+    {
+      from_port   = 1522
+      to_port     = 1522
+      protocol    = "tcp"
+      cidr_blocks = ["192.168.0.0/16"]
+      description = "Private network class C to Oracle TCPS access"
+    }
+  ]
+  # Wybór reguł na podstawie engine
+  engine_based_ingress = (
+    var.engine == "oracle" ? local.oracle_ingress_rules :
+    var.engine == "sqlserver" ? local.mssql_ingress_rules :
+    []
+  )
+  # Połączone reguły (dodatkowe + zależne od engine)
+  ingress_rules = concat(local.engine_based_ingress, var.extra_ingress)
 }
