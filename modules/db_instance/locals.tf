@@ -266,8 +266,8 @@ locals {
   ]
   # Wybór reguł na podstawie engine
   engine_based_ingress = (
-    var.engine == "oracle" ? local.oracle_ingress_rules :
-    var.engine == "sqlserver" ? local.mssql_ingress_rules :
+    local.db_engine == "oracle" ? local.oracle_ingress_rules :
+    local.db_engine == "mssql" ? local.mssql_ingress_rules :
     []
   )
   # Połączone reguły (dodatkowe + zależne od engine)
